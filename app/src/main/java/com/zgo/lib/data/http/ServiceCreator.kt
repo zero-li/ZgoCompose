@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  */
 object ServiceCreator {
     private const val DEBUG = true
-    private const val BASE_URL = "https://api.github.com/"
+    private var BASE_URL = "https://api.github.com/"
 
     private fun getOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
@@ -32,11 +32,19 @@ object ServiceCreator {
         .registerTypeHierarchyAdapter(List::class.java, ArraySecurityAdapter())
         .create()
 
-    private val retrofit = Retrofit.Builder()
-        .client(getOkHttpClient())
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .build()
+    private lateinit var retrofit: Retrofit
+
+    fun init(baseUrl :String): ServiceCreator{
+        BASE_URL = baseUrl
+
+        retrofit = Retrofit.Builder()
+            .client(getOkHttpClient())
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        return  this
+    }
 
     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 

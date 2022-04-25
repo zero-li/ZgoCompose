@@ -1,2 +1,7 @@
 # ZgoDemo
-android compose 
+
+* android compose
+* navigation compose
+* paging
+* http
+* demo for fun android api

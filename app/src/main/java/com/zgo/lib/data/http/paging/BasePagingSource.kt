@@ -20,7 +20,7 @@ abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
         }
     }
 
-    abstract suspend fun httpLoadData(page: Int, perPage: Int): KResults<PageWrapper<T>?>
+    abstract suspend fun httpLoadData(page: Int, perPage: Int): KResults<IPageWrapper<T>?>
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
@@ -32,13 +32,13 @@ abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
             is KResults.Success -> {
 
                 val list: List<T> = results.data?.list ?: emptyList()
-                val noNextPage = list.size < params.loadSize
+                val noNextPage = results.data?.isEnd ?: true
 
 
                 LoadResult.Page(
                     data = list,
                     prevKey = if (nextPage == 1) null else nextPage - 1,
-                    nextKey = if (noNextPage) null else results.data!!.currentPage + 1
+                    nextKey = if (noNextPage) null else results.data!!.curPage + 1
                 )
 
 
