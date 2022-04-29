@@ -113,7 +113,11 @@ fun BottomNavigation(navHostController: NavHostController) {
 }
 
 
-sealed class BottomNavItem(var title: String, var icon: ImageVector, var screen_route: String) {
+private sealed class BottomNavItem(
+    var title: String,
+    var icon: ImageVector,
+    var screen_route: String
+) {
     object Home : BottomNavItem("首页", Icons.Filled.Home, "drawable-home")
     object Mine : BottomNavItem("我的", Icons.Filled.Person, "mine")
     object Color : BottomNavItem("色彩", Icons.Filled.Palette, "color")
