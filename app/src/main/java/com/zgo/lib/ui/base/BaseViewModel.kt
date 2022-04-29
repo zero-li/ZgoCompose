@@ -19,14 +19,14 @@ import kotlinx.coroutines.flow.Flow
 open class BaseViewModel : ViewModel() {
 
 
-    fun <T : Any> pager(source: () -> BasePagingSource<T>): Flow<PagingData<T>> {
-        return Pager(
-            PagingConfig(
-                pageSize = 10,
-                prefetchDistance = 4,
-                initialLoadSize = 10
-            )
-        ) {
+    fun <T : Any> pager(
+        config: PagingConfig = PagingConfig(
+            pageSize = 10,
+            prefetchDistance = 4,
+            initialLoadSize = 10
+        ), source: () -> BasePagingSource<T>
+    ): Flow<PagingData<T>> {
+        return Pager(config) {
             source()
         }.flow.cachedIn(viewModelScope)
     }

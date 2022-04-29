@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.zgo.cookbook.CookbookApp
+import com.zgo.demo.ui.page.RootPage
 import com.zgo.demo.ui.page.main.MainPage
 import com.zgo.lib.ui.base.addFirstGraph
 
@@ -30,8 +32,21 @@ fun NavGraph() {
 
     NavHost(
         navController = navCtrl,
-        startDestination = "main_page"
+        startDestination = "root"
     ) {
+
+        composable("root") {
+            RootPage() {
+                navCtrl.navigate(it)
+            }
+        }
+
+        composable("cook_book") {
+            CookbookApp()
+        }
+
+
+
         composable("main_page") {
             MainPage {
                 navCtrl.navigate(it)
