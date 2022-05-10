@@ -35,14 +35,20 @@ fun ZgoBottomNavigation(navBottomBar: NavController, items: List<AbsBottomNavIte
 
 
                     navBottomBar.navigate(item.screen_route) {
-
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
                         navBottomBar.graph.startDestinationRoute?.let { screen_route ->
                             popUpTo(screen_route) {
                                 saveState = true
                             }
                         }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
                         launchSingleTop = true
-                        restoreState = true
+                        // Restore state when reselecting a previously selected item
+                        // **** crash 快速切换 *****
+                        // restoreState = true
                     }
 
                 },
