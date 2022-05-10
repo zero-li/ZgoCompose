@@ -1,5 +1,7 @@
 package com.zgo.lib.ui.base
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -17,6 +19,10 @@ import kotlinx.coroutines.flow.Flow
  * @date: 22/2/16
  */
 open class BaseViewModel : ViewModel() {
+
+    private val _uiState = mutableStateOf<UiState>(UiState.SignedOut)
+    val uiState: State<UiState>
+        get() = _uiState
 
 
     fun <T : Any> pager(
