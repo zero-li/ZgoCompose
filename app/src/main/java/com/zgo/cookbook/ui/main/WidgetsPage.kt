@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.systemBarsPadding
 import com.zgo.cookbook.data.CookWidget
 import com.zgo.cookbook.data.Md3Widgets
+import com.zgo.cookbook.data.ThirdWidgets
 import com.zgo.lib.ui.components.ZgoScaffold
 import com.zgo.lib.ui.components.gridItems
 
@@ -43,6 +44,14 @@ fun WidgetsPage(
                 TitleItem("Md3组件")
             }
             gridItems(Md3Widgets, 2) { widget ->
+                WidgetItem(widgetData = widget, navigate)
+
+
+            }
+            stickyHeader {
+                TitleItem("自定义组件")
+            }
+            gridItems(ThirdWidgets, 2) { widget ->
                 WidgetItem(widgetData = widget, navigate)
 
 
