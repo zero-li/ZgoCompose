@@ -15,6 +15,7 @@ import com.zgo.cookbook.ui.md3.switch.SwitchExample
 import com.zgo.cookbook.ui.md3.text.TextExample
 import com.zgo.cookbook.ui.md3.text_field.TextFieldExample
 import com.zgo.cookbook.ui.third.RadarExample
+import com.zgo.cookbook.ui.third.coil.CoilExample
 import com.zgo.demo.data.ZgoPage
 
 
@@ -55,6 +56,7 @@ val Md3Widgets = listOf(
 
 val ThirdWidgets = listOf(
     CookWidget("Radar", Icons.Filled.Radar) { RadarExample() },
+    CookWidget("Coil Image", Icons.Filled.Image) { CoilExample() },
 )
 
 
