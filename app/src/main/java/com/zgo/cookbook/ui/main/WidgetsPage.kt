@@ -16,6 +16,7 @@ import com.google.accompanist.insets.systemBarsPadding
 import com.zgo.cookbook.data.CookWidget
 import com.zgo.cookbook.data.Md3Widgets
 import com.zgo.cookbook.data.ThirdWidgets
+import com.zgo.cookbook.ui.layout.layoutWidgets
 import com.zgo.lib.ui.components.ZgoScaffold
 import com.zgo.lib.ui.components.gridItems
 
@@ -45,16 +46,20 @@ fun WidgetsPage(
             }
             gridItems(Md3Widgets, 2) { widget ->
                 WidgetItem(widgetData = widget, navigate)
-
-
             }
+
+            stickyHeader {
+                TitleItem("布局")
+            }
+            gridItems(layoutWidgets, 2) { widget ->
+                WidgetItem(widgetData = widget, navigate)
+            }
+
             stickyHeader {
                 TitleItem("自定义组件")
             }
             gridItems(ThirdWidgets, 2) { widget ->
                 WidgetItem(widgetData = widget, navigate)
-
-
             }
 
         }
