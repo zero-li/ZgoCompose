@@ -2,7 +2,6 @@
 
 package com.zgo.cookbook.ui.main
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BusinessCenter
@@ -45,23 +44,22 @@ fun CookMainPage(
             ZgoBottomNavigation(navBottomBar = navBottomBar, items = items)
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            NavHost(
-                navController = navBottomBar,
-                startDestination = BottomNavItem.Widgets.screen_route
-            ) {
-                composable(BottomNavItem.Widgets.screen_route) {
-                    WidgetsPage(navigate)
-                }
-                composable(BottomNavItem.Tools.screen_route) {
-                    WidgetsPage(navigate)
-                }
-                composable(BottomNavItem.Expand.screen_route) {
-                    WidgetsPage(navigate)
-                }
 
-
+        NavHost(
+            navController = navBottomBar,
+            startDestination = BottomNavItem.Widgets.screen_route,
+            Modifier.padding(innerPadding)
+        ) {
+            composable(BottomNavItem.Widgets.screen_route) {
+                WidgetsPage(navigate)
             }
+            composable(BottomNavItem.Tools.screen_route) {
+                WidgetsPage(navigate)
+            }
+            composable(BottomNavItem.Expand.screen_route) {
+                WidgetsPage(navigate)
+            }
+
 
         }
 

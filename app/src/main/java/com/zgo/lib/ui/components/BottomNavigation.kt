@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 
 /*
@@ -21,18 +23,17 @@ fun ZgoBottomNavigation(navBottomBar: NavController, items: List<AbsBottomNavIte
 
 
     NavigationBar {
-//        val navBackStackEntry by navHostController.currentBackStackEntryAsState()
-//        val currentRoute = navBackStackEntry?.destination?.route
+        val navBackStackEntry by navBottomBar.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
 
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 label = { Text(item.title) },
                 icon = { Icon(item.icon, contentDescription = item.title) },
 //                selected = currentRoute == item.screen_route,
-                selected = index == selectedItem,
+//                selected = index == selectedItem,
+                selected = currentDestination?.hierarchy?.any { it.route == item.screen_route } == true,
                 onClick = {
-                    selectedItem = index
-
 
                     navBottomBar.navigate(item.screen_route) {
                         // Pop up to the start destination of the graph to
@@ -47,8 +48,7 @@ fun ZgoBottomNavigation(navBottomBar: NavController, items: List<AbsBottomNavIte
                         // reselecting the same item
                         launchSingleTop = true
                         // Restore state when reselecting a previously selected item
-                        // **** crash 快速切换 *****
-                        // restoreState = true
+                        restoreState = true
                     }
 
                 },
