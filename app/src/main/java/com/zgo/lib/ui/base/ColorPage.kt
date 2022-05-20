@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zgo.demo.R
 import com.zgo.lib.ui.components.ZgoScaffold
+import com.zgo.lib.ui.theme.color.ChColor
+import com.zgo.lib.ui.theme.color.ChKindColor
 import com.zgo.lib.ui.theme.color.NipponColor
 import com.zgo.lib.ui.theme.color.ZgoColor
 
@@ -45,7 +47,9 @@ fun ColorPage() {
         LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
 
 
-            val items = NipponColor.list
+            val items = zgoColorRandomList
+
+
             items(items.size) { index ->
                 val item = items[index]
                 ZgoColorItem(item = item)
@@ -56,6 +60,18 @@ fun ColorPage() {
 
     }
 }
+
+val zgoColorRandomList: List<ZgoColor>
+    get() {
+        val items = mutableListOf<ZgoColor>()
+
+        items.addAll(ChColor.list.shuffled())
+        items.addAll(ChKindColor.list.shuffled())
+        items.addAll(NipponColor.list.shuffled())
+
+        return items
+    }
+
 
 @Composable
 fun ZgoColorItem(

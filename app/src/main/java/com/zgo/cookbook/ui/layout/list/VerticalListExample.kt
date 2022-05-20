@@ -3,6 +3,7 @@ package com.zgo.cookbook.ui.layout.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,10 +23,7 @@ import com.zgo.lib.ui.theme.color.NipponColor
 @Composable
 fun VerticalListExample() {
 
-    val chColor = ChColor.list.sortedBy { it.pinyin }
 
-    val chKindColor = ChKindColor.list.sortedBy { it.id }
-    val nipponColor = NipponColor.list.sortedBy { it.name }
 
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -33,17 +31,19 @@ fun VerticalListExample() {
         verticalArrangement = Arrangement.Center,
     ) {
 
-
-        items(chKindColor.size) { index ->
-            ZgoColorItem(chKindColor[index])
-        }
-
-        gridItems(chColor, 3) { item ->
+        items(ChKindColor.list.shuffled()) { item ->
             ZgoColorItem(item)
         }
 
-        items(nipponColor.size) { index ->
-            ZgoColorItem(nipponColor[index])
+
+
+        gridItems(ChColor.list.shuffled(), 3) { item ->
+            ZgoColorItem(item)
+        }
+
+
+        items(NipponColor.list.shuffled()) { item ->
+            ZgoColorItem(item)
         }
 
 

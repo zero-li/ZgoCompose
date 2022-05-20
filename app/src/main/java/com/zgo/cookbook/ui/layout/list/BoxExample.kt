@@ -13,5 +13,5 @@ import com.zgo.lib.ui.theme.color.ChColor
  */
 @Composable
 fun BoxExample() {
-    ZgoColorItem(item = ChColor.lvhui_469)
+    ZgoColorItem(item = ChColor.list.shuffled()[0])
 }

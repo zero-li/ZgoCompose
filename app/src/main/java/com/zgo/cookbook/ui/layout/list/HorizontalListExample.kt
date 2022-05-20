@@ -3,12 +3,12 @@ package com.zgo.cookbook.ui.layout.list
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.zgo.lib.ui.base.ZgoColorItem
-import com.zgo.lib.ui.theme.color.ChColor
-import com.zgo.lib.ui.theme.color.ChKindColor
+import com.zgo.lib.ui.base.zgoColorRandomList
 
 
 /*
@@ -27,14 +27,12 @@ fun HorizontalListExample() {
     ) {
 
 
-        val colors = ChKindColor.list.sortedBy { it.id }
-        items(colors.size) { index ->
-            ZgoColorItem(colors[index])
+        items(zgoColorRandomList) { item ->
+            ZgoColorItem(item)
         }
 
-        val items = ChColor.list.sortedBy { it.pinyin }
-        items(items.size) { index ->
-            ZgoColorItem(items[index])
+        items(zgoColorRandomList.size) { index ->
+            ZgoColorItem(zgoColorRandomList[index])
         }
 
 
