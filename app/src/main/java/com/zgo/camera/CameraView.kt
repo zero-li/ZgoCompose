@@ -16,6 +16,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
@@ -40,7 +42,6 @@ import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zgo.camera.utils.PermissionView
 import com.zgo.camera.utils.openSettingsPermission
-import com.zgo.lib.utils.Utils.context
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -61,7 +62,7 @@ import kotlin.coroutines.suspendCoroutine
 // We only need to analyze the part of the image that has text, so we set crop percentages
 // to avoid analyze the entire image from the live camera feed.
 // 裁剪区域 比例
-val cropTopLeftScale: Offset = Offset(x = 0.025f, y = 0.45f)
+val cropTopLeftScale: Offset = Offset(x = 0.025f, y = 0.3f)
 val cropSizeScale: Size = Size(width = 0.95f, height = 0.1f)
 
 @Composable
@@ -70,6 +71,10 @@ fun CameraViewPermission(
     preview: Preview,
     imageCapture: ImageCapture? = null,
     imageAnalysis: ImageAnalysis? = null,
+    cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
+    scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
+    enableTorch: Boolean = false,
+    focusOnTap: Boolean = false
 ) {
 
     val context = LocalContext.current
@@ -96,7 +101,11 @@ fun CameraViewPermission(
             modifier,
             preview = preview,
             imageCapture = imageCapture,
-            imageAnalysis = imageAnalysis
+            imageAnalysis = imageAnalysis,
+            scaleType = scaleType,
+            cameraSelector = cameraSelector,
+            focusOnTap = focusOnTap,
+            enableTorch = enableTorch,
         )
 
 
@@ -105,44 +114,59 @@ fun CameraViewPermission(
 
 }
 
-
+// https://stackoverflow.com/a/70302763
 @Composable
 fun CameraView(
     modifier: Modifier = Modifier,
     preview: Preview,
     imageCapture: ImageCapture? = null,
     imageAnalysis: ImageAnalysis? = null,
+    cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
+    scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
+    enableTorch: Boolean = false,
+    focusOnTap: Boolean = false
 ) {
 
+    val context = LocalContext.current
 
     //1
     val previewView = remember { PreviewView(context) }
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // 2
+    val cameraProvider by produceState<ProcessCameraProvider?>(initialValue = null) {
+        value = context.getCameraProvider()
+    }
+
+    val camera = remember(cameraProvider) {
+        cameraProvider?.let {
+            it.unbindAll()
+            it.bindToLifecycle(
+                lifecycleOwner,
+                cameraSelector,
+                *listOfNotNull(preview, imageAnalysis, imageCapture).toTypedArray()
+            )
+        }
+    }
+
+
     LaunchedEffect(true) {
-
-
-        val lensFacing = CameraSelector.LENS_FACING_BACK
-        val cameraSelector = CameraSelector.Builder()
-            .requireLensFacing(lensFacing)
-            .build()
-
-
-        val useCase = listOfNotNull(preview, imageAnalysis, imageCapture)
-
-        val cameraProvider = context.getCameraProvider()
-        cameraProvider.unbindAll()
-        cameraProvider.bindToLifecycle(
-            lifecycleOwner,
-            cameraSelector,
-            * useCase.toTypedArray(),
-        )
-
-
         preview.setSurfaceProvider(previewView.surfaceProvider)
+        previewView.scaleType = scaleType
+    }
 
 
+    LaunchedEffect(camera, enableTorch) {
+        camera?.let {
+            if (it.cameraInfo.hasFlashUnit()) {
+                it.cameraControl.enableTorch(context, enableTorch)
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            cameraProvider?.unbindAll()
+        }
     }
 
     // 3
@@ -150,6 +174,26 @@ fun CameraView(
         { previewView },
         modifier = modifier
             .fillMaxSize()
+            .pointerInput(camera, focusOnTap) {
+                if (!focusOnTap) return@pointerInput
+
+                detectTapGestures {
+                    val meteringPointFactory = SurfaceOrientedMeteringPointFactory(
+                        size.width.toFloat(),
+                        size.height.toFloat()
+                    )
+
+                    val meteringAction = FocusMeteringAction
+                        .Builder(
+                            meteringPointFactory.createPoint(it.x, it.y),
+                            FocusMeteringAction.FLAG_AF
+                        )
+                        .disableAutoCancel()
+                        .build()
+
+                    camera?.cameraControl?.startFocusAndMetering(meteringAction)
+                }
+            },
     )
 
 
@@ -334,6 +378,15 @@ private suspend fun Context.getCameraProvider(): ProcessCameraProvider =
                 continuation.resume(cameraProvider.get())
             }, ContextCompat.getMainExecutor(this))
         }
+    }
+
+private suspend fun CameraControl.enableTorch(context: Context, torch: Boolean): Unit =
+    suspendCoroutine {
+        enableTorch(torch).addListener(
+            {},
+            ContextCompat.getMainExecutor(context)
+
+        )
     }
 
 

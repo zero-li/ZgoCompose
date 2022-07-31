@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -38,13 +39,20 @@ class CameraViewModel(config: CameraConfig) : ViewModel() {
 
     var bitmapR = mutableStateOf(Bitmap.createBitmap(10, 10, Bitmap.Config.RGB_565))
 
+    var enableTorch: MutableState<Boolean> = mutableStateOf(false)
+
+    fun toggleTorch() {
+        enableTorch.value = !enableTorch.value
+    }
+
 
     @SuppressLint("UnsafeOptInUsageError")
     fun analyze() {
 
         imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) {
 
-            textAnalyzer.analyze(it,
+            textAnalyzer.analyze(
+                it,
                 object : Analyzer.OnAnalyzeListener<AnalyzeResult<Text>> {
                     override fun onSuccess(result: AnalyzeResult<Text>) {
 
@@ -53,7 +61,7 @@ class CameraViewModel(config: CameraConfig) : ViewModel() {
                         Log.d("zzz", "onSuccess")
                         Log.d("zzzzzz OCR result", "ocr result: $text")
                         bitmapR.value = result.bitmap
-                        scanText.value = "ocr result: $text"
+                        scanText.value = text
 
                     }
 
