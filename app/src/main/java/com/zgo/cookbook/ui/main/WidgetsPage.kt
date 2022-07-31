@@ -41,6 +41,14 @@ fun WidgetsPage(
             contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+
+            stickyHeader {
+                TitleItem("自定义组件")
+            }
+            gridItems(ThirdWidgets, 2) { widget ->
+                WidgetItem(widgetData = widget, navigate)
+            }
+
             stickyHeader {
                 TitleItem("Md3组件")
             }
@@ -55,12 +63,6 @@ fun WidgetsPage(
                 WidgetItem(widgetData = widget, navigate)
             }
 
-            stickyHeader {
-                TitleItem("自定义组件")
-            }
-            gridItems(ThirdWidgets, 2) { widget ->
-                WidgetItem(widgetData = widget, navigate)
-            }
 
         }
 

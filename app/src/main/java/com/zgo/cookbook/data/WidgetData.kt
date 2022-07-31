@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.zgo.camera.ui.CameraExample
 import com.zgo.cookbook.ui.md3.alert_dialog.AlertDialogExample
 import com.zgo.cookbook.ui.md3.button.ButtonsExample
 import com.zgo.cookbook.ui.md3.chip.ChipExample
@@ -57,6 +58,7 @@ val Md3Widgets = listOf(
 val ThirdWidgets = listOf(
     CookWidget("Radar", Icons.Filled.Radar) { RadarExample() },
     CookWidget("Coil Image", Icons.Filled.Image) { CoilExample() },
+    CookWidget("CameraView", Icons.Filled.Camera) { CameraExample() },
 )
 
 

@@ -55,6 +55,7 @@ dependencies {
 
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -115,6 +116,9 @@ dependencies {
     implementation "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
     //placeholder
     implementation "com.google.accompanist:accompanist-placeholder-material:$accompanistVersion"
+    //permissions
+    implementation "com.google.accompanist:accompanist-permissions:$accompanistVersion"
+
 
     // 图片加载
     implementation("io.coil-kt:coil-compose:2.0.0")
@@ -128,6 +132,20 @@ dependencies {
     //okHttp
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
+
+    def camerax_version = '1.2.0-alpha03'
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-view:$camerax_version"
+
+    implementation "com.google.mlkit:barcode-scanning:17.0.2"
+    implementation "com.google.mlkit:text-recognition:16.0.0-beta4"
+    implementation "com.google.mlkit:text-recognition-chinese:16.0.0-beta4"
+
+
+
+
 
 
 
