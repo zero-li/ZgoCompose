@@ -12,6 +12,7 @@ import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +46,9 @@ fun TuCongPage(
     navigate: (routeName: String) -> Unit,
 ) {
 
-    val viewModel = TuCongViewModel()
+    val viewModel = remember {
+        TuCongViewModel()
+    }
 
     val lazyItems = viewModel.list.collectAsLazyPagingItems()
 
