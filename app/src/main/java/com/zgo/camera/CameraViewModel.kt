@@ -10,8 +10,15 @@ import androidx.camera.core.Preview
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.text.Text
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
+import com.zgo.camera.ui.cropTextImage
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -27,11 +34,25 @@ class CameraViewModel(config: CameraConfig) : ViewModel() {
     val preview = config.options(Preview.Builder())
     val imageCapture: ImageCapture = config.options(ImageCapture.Builder())
     val imageAnalysis: ImageAnalysis = config.options(ImageAnalysis.Builder())
-    val imageAnalysisBarcode: ImageAnalysis = config.options(ImageAnalysis.Builder())
 
 
-    private val textAnalyzer = TextCropScanAnalyzer()
-    private val barcodeAnalyzer = BarcodeAnalyzer()
+    private val textRecognizer: TextRecognizer = TextRecognition.getClient(
+        ChineseTextRecognizerOptions.Builder().build()
+    )
+
+    private val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(
+        BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_CODE_128, Barcode.FORMAT_QR_CODE).build()
+    )
+
+    private var useOCR = true
+
+//    private var enableAnalysis = true
+//
+//    // 重新识别
+//    fun analyzeReStart() {
+//        enableAnalysis = true
+//    }
 
 
     var scanText = mutableStateOf("")
@@ -49,60 +70,66 @@ class CameraViewModel(config: CameraConfig) : ViewModel() {
     @SuppressLint("UnsafeOptInUsageError")
     fun analyze() {
 
-        imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) {
+        imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
+            if (image.image == null) {
+                image.close()
+                return@setAnalyzer
+            }
 
-            textAnalyzer.analyze(
-                it,
-                object : Analyzer.OnAnalyzeListener<AnalyzeResult<Text>> {
-                    override fun onSuccess(result: AnalyzeResult<Text>) {
+            val mediaImage = image.image!!
 
-                        val text = result.result.text
 
-                        Log.d("zzz", "onSuccess")
+            val inputImage = InputImage.fromMediaImage(mediaImage, image.imageInfo.rotationDegrees)
+
+            val task = if (useOCR) {
+
+                // OCR 识别, 截取扫描框图片
+                val bitmap = cropTextImage(image) ?: return@setAnalyzer
+
+                val inputImageCrop = InputImage.fromBitmap(bitmap, 0)
+
+                textRecognizer.process(inputImageCrop)
+                    .addOnSuccessListener {
+                        val text = it.text
+
+                        Log.d("zzz", "textRecognizer onSuccess")
                         Log.d("zzzzzz OCR result", "ocr result: $text")
-                        bitmapR.value = result.bitmap
+                        bitmapR.value = bitmap
                         scanText.value = text
 
-                    }
-
-                    override fun onFailure(bitmap: Bitmap) {
+                    }.addOnFailureListener {
                         Log.d("zzz", "onFailure")
-
                         bitmapR.value = bitmap
                         scanText.value = "onFailure"
-
                     }
-                })
 
-
-        }
-
-
-
-
-        imageAnalysisBarcode.setAnalyzer(Executors.newSingleThreadExecutor()) {
-
-            barcodeAnalyzer.analyze(it,
-                object : Analyzer.OnAnalyzeListener<AnalyzeResult<List<Barcode>>> {
-                    override fun onSuccess(result: AnalyzeResult<List<Barcode>>) {
-
-                        result.result.forEach { code ->
+            } else {
+                barcodeScanner.process(inputImage)
+                    .addOnSuccessListener {
+                        Log.d("zzz", "barcodeScanner onSuccess")
+                        it.forEach { code ->
                             val text = code.displayValue ?: ""
                             text.isNotEmpty().apply {
                                 scanBarcode.value = text
-
                             }
                         }
 
+                    }.addOnFailureListener {
+                        Log.d("zzz", "onFailure")
+                        scanBarcode.value = "onFailure"
 
                     }
+            }
 
-                    override fun onFailure(bitmap: Bitmap) {
-                        scanBarcode.value = ""
-                    }
 
-                })
+            task.addOnCompleteListener {
+                image.close()
+            }
+
+
         }
+
+
     }
 
 

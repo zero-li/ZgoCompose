@@ -3,6 +3,7 @@
 package com.zgo.camera.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Typeface
@@ -18,9 +19,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -32,7 +33,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.zgo.camera.utils.ImageUtils
 import com.zgo.camera.utils.PermissionView
 import com.zgo.camera.utils.openSettingsPermission
 import java.io.File
@@ -86,7 +87,7 @@ fun CameraViewPermission(
             Column(modifier) {
                 Text("未能获取相机")
                 Spacer(modifier = Modifier.height(8.dp))
-                Button(
+                TextButton(
                     onClick = {
                         openSettingsPermission(context)
                     }
@@ -203,6 +204,8 @@ fun CameraView(
 /**
  * 扫描框：按屏幕比例
  *
+ * 当 sizeScale.height == 0f 或 sizeScale.width == 0f 为方形
+ *
  */
 @Composable
 fun DrawCropScan(
@@ -211,14 +214,14 @@ fun DrawCropScan(
     color: Color = MaterialTheme.colorScheme.primary,
 ) {
 
-    var target by remember { mutableStateOf(0f) }
+    var lineBottomY by remember { mutableStateOf(0f) }
 
-    var target2 by remember { mutableStateOf(Offset.Zero) }
 
     var isAnimated by remember { mutableStateOf(true) }
 
-    val offsetAnimation by animateFloatAsState(
-        targetValue = if (isAnimated) 0f else target,
+
+    val lineYAnimation by animateFloatAsState(
+        targetValue = if (isAnimated) 0f else lineBottomY,
         animationSpec = infiniteRepeatable(animation = TweenSpec(durationMillis = 1500))
     )
 
@@ -226,11 +229,11 @@ fun DrawCropScan(
         isAnimated = !isAnimated
     }
 
-    Canvas(modifier = Modifier
-        .fillMaxSize()
-        .onGloballyPositioned {
-            target2 = it.positionInRoot()
-        }
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .onGloballyPositioned {
+            }
     ) {
 
         val paint = Paint().asFrameworkPaint()
@@ -245,12 +248,23 @@ fun DrawCropScan(
         drawRect(Color.Transparent.copy(alpha = 0.1f))
 
 
-        val height = size.height * sizeScale.height
-        val with = size.width * sizeScale.width
+        // 扫描框 高度、宽度
+        var height = size.height * sizeScale.height
+        var with = size.width * sizeScale.width
+
+        // square 方形
+        if (sizeScale.height == 0f) {
+            height = with
+        }
+        if (sizeScale.width == 0f) {
+            with = height
+        }
+
+
         val topLeft = Offset(x = size.width * topLeftScale.x, y = size.height * topLeftScale.y)
 
-        target = height - 5.dp.toPx()
 
+        // 扫描框 矩形
         val rectF = Rect(offset = topLeft, size = Size(with, height))
 
 //        Log.d("rectF", " width-height: ${rectF.width} * ${rectF.height}")
@@ -264,15 +278,22 @@ fun DrawCropScan(
             blendMode = BlendMode.Clear
         )
 
+        // 扫描线 可到达的最大位置
+        lineBottomY = height - 5.dp.toPx()
+
+
         val padding = 10.dp.toPx()
 
+        // 扫描线
         val rectLine = Rect(
-            offset = topLeft.plus(Offset(x = padding, y = offsetAnimation)),
+            offset = topLeft.plus(Offset(x = padding, y = lineYAnimation)),
             size = Size(with - 2 * padding, 3.dp.toPx())
         )
 
+        // 画扫描线
         drawOval(color, rectLine.topLeft, rectLine.size)
 
+        // 边框
         val lineWith = 3.dp.toPx()
         val lineLength = 12.dp.toPx()
 
@@ -336,6 +357,41 @@ fun ShowAfterCropImageToAnalysis(bitmap: Bitmap) {
             }
     )
 
+
+}
+
+
+@SuppressLint("UnsafeOptInUsageError")
+fun cropTextImage(imageProxy: ImageProxy): Bitmap? {
+    val mediaImage = imageProxy.image ?: return null
+
+    val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+
+
+    val imageHeight = mediaImage.height
+    val imageWidth = mediaImage.width
+
+    val cropRect = when (rotationDegrees) {
+        90, 270 -> getCropRect90(imageHeight.toFloat(), imageWidth.toFloat()).toAndroidRect()
+        else -> getCropRect(imageHeight.toFloat(), imageWidth.toFloat()).toAndroidRect()
+    }
+
+
+    val convertImageToBitmap = ImageUtils.convertYuv420888ImageToBitmap(mediaImage)
+
+    val croppedBitmap =
+        ImageUtils.rotateAndCrop(convertImageToBitmap, rotationDegrees, cropRect)
+
+//        Log.d("===", "====================================")
+//        Log.d("mediaImage", "$rotationDegrees width-height: $imageWidth * $imageHeight")
+//        Log.d("cropRect", "$rotationDegrees width-height: ${cropRect.width()} * ${cropRect.height()}")
+//        Log.d("cropRect", "$rotationDegrees ltrb: $cropRect")
+//
+//        Log.d("convertImageToBitmap", "width-height: ${convertImageToBitmap.width} * ${convertImageToBitmap.height}")
+//        Log.d("croppedBitmap", "width-height: ${croppedBitmap.width} * ${croppedBitmap.height}")
+
+
+    return croppedBitmap
 
 }
 
@@ -417,3 +473,7 @@ fun ImageCapture.takePhoto(
         }
     })
 }
+
+
+
+

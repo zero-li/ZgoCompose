@@ -84,7 +84,7 @@ fun CameraExample() {
             onClick = { viewModel.toggleTorch() },
             modifier = Modifier
                 .align(alignment = Alignment.BottomEnd)
-                .padding(20.dp),
+                .padding(bottom = 50.dp, end = 20.dp),
         ) {
             Icon(
                 imageVector = if (viewModel.enableTorch.value) {
@@ -105,7 +105,7 @@ fun CameraExample() {
 
         IconButton(
             modifier = Modifier
-                .padding(bottom = 20.dp)
+                .padding(bottom = 40.dp)
                 .align(alignment = Alignment.BottomCenter),
             onClick = {
                 viewModel.imageCapture.takePhoto(
