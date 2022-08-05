@@ -5,6 +5,17 @@
 * paging
 * http
 * demo for fun android api
+* CameraView
+* mlkit-text-recognition (crop image)
+
+OCR 识别文字
+采用[Google MlKit](https://github.com/googlesamples/mlkit)
+
+效果图
+
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3a23a13627d84a7c9a64de947676aae3~tplv-k3u1fbpfcp-watermark.image?" alt="" width="50%" />
+
+
 
 
 
