@@ -40,6 +40,8 @@ import com.zgo.lib.ui.theme.color.ZgoColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColorPage() {
+
+
     ZgoScaffold(title = "色彩",
         onBackClick = { })
     {
@@ -59,6 +61,7 @@ fun ColorPage() {
         }
 
     }
+
 }
 
 val zgoColorRandomList: List<ZgoColor>
@@ -120,6 +123,8 @@ fun ZgoColorCircleBox(item: ZgoColor, size: Dp = 80.dp) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+
             Text(
                 text = item.name,
                 color = Color.White,

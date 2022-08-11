@@ -23,6 +23,11 @@ open class ChColor(
     val cmyk: List<Int> = listOf(),
 ) : ZgoColor(id, name, hex, color) {
 
+    override fun toRGB(): List<Int> {
+        return rgb
+    }
+
+
     companion object {
         val list = listOf(
             rubai_0,

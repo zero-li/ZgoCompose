@@ -17,7 +17,7 @@ import com.zgo.cookbook.ui.md3.text.TextExample
 import com.zgo.cookbook.ui.md3.text_field.TextFieldExample
 import com.zgo.cookbook.ui.third.RadarExample
 import com.zgo.cookbook.ui.third.coil.CoilExample
-import com.zgo.demo.data.ZgoPage
+import com.zgo.lib.data.ZgoPage
 
 
 /*
