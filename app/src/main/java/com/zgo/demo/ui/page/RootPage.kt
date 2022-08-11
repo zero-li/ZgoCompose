@@ -69,7 +69,7 @@ fun RootPage(
             .height(60.dp)
             .fillMaxWidth(),
             onClick = {
-                navigate("main_page")
+                navigate("demo")
             }) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

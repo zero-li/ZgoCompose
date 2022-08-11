@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.zgo.lib.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,7 +25,6 @@ import com.zgo.lib.ui.theme.AppTheme
  * @date: 22/1/18
  */
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ZgoScaffold(
     modifier: Modifier = Modifier,
@@ -58,7 +59,6 @@ fun ZgoScaffold(
 
 }
 
-@ExperimentalMaterial3Api
 @Composable
 fun ZgoScaffold(
     title: String,
