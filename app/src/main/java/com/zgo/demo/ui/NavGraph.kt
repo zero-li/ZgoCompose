@@ -6,8 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.zgo.cookbook.CookbookApp
+import com.zgo.demo.ui.page.DemoListPage
 import com.zgo.demo.ui.page.RootPage
-import com.zgo.demo.ui.page.main.MainPage
+import com.zgo.demo.ui.page.demoListNaviGraph
 import com.zgo.lib.ui.base.addFirstGraph
 
 
@@ -47,10 +48,14 @@ fun NavGraph() {
 
 
 
-        composable("main_page") {
-            MainPage {
+        composable("demo") {
+            DemoListPage(onBack = onBack) {
                 navCtrl.navigate(it)
             }
+        }
+
+        demoListNaviGraph(onBack) {
+            navCtrl.navigate(it)
         }
 
 
