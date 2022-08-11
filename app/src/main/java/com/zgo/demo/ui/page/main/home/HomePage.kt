@@ -21,8 +21,8 @@ import com.google.accompanist.insets.systemBarsPadding
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
-import com.zgo.demo.data.fun_android.bean.Article
-import com.zgo.demo.data.fun_android.viewmodel.home.FunViewModel
+import com.zgo.demo.fun_android.data.bean.Article
+import com.zgo.demo.fun_android.data.home.FunViewModel
 import com.zgo.lib.ui.components.IconNavRight
 import com.zgo.lib.ui.components.SwipeRefreshList
 import com.zgo.lib.ui.components.ZgoScaffold

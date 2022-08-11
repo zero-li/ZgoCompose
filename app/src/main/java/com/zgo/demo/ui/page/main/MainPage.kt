@@ -17,9 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.navigationBarsPadding
+import com.zgo.demo.tucong.ui.page.TuCongPage
 import com.zgo.demo.ui.page.main.home.HomePage
 import com.zgo.demo.ui.page.main.mine.MinePage
-import com.zgo.demo.ui.page.tucong.TuCongPage
 import com.zgo.lib.ui.base.ColorPage
 import com.zgo.lib.ui.components.ZgoScaffold
 import com.zgo.lib.ui.theme.AppTheme
