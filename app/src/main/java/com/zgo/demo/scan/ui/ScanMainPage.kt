@@ -2,6 +2,7 @@
 
 package com.zgo.demo.scan.ui
 
+import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
@@ -15,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.navigationBarsPadding
+import com.zgo.demo.scan.ui.scanner.ScannerPage
 import com.zgo.lib.ui.components.AbsBottomNavItem
 import com.zgo.lib.ui.components.ZgoBottomNavigation
 import com.zgo.lib.ui.components.ZgoScaffold
@@ -51,10 +53,17 @@ fun ScanMainPage(
             Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Scanner.screen_route) {
-                ScannerPage(navigate)
+                ScannerPage() {
+                    val json = Uri.encode(it)
+                    navigate("scan_result/$json")
+                }
             }
             composable(BottomNavItem.History.screen_route) {
-                HistoryPage(navigate)
+                HistoryPage {
+                    val json = Uri.encode(it.toJson().toString())
+                    navigate("scan_result/$json")
+
+                }
             }
             composable(BottomNavItem.Settings.screen_route) {
                 SettingPage(navigate)
