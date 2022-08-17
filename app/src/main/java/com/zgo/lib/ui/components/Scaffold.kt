@@ -9,10 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zgo.lib.ui.theme.AppTheme
@@ -38,10 +36,10 @@ fun ZgoScaffold(
     content: @Composable (PaddingValues) -> Unit
 
 ) {
-    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
+//    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
 
     Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = snackbarHost,

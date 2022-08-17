@@ -2,7 +2,6 @@ package com.zgo.demo.scan.ui.scanner
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
@@ -10,6 +9,7 @@ import androidx.camera.core.Preview
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -20,6 +20,11 @@ import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.text.chinese.ChineseTextRecognizerOptions
 import com.zgo.camera.CameraConfig
 import com.zgo.camera.ui.cropTextImage
+import com.zgo.demo.scan.data.db.ScanHistory
+import com.zgo.demo.scan.database
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -44,7 +49,7 @@ class ScannerViewModel(config: CameraConfig) : ViewModel() {
 
     private val barcodeScanner: BarcodeScanner = BarcodeScanning.getClient(
         BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_CODE_128, Barcode.FORMAT_QR_CODE).build()
+            .setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS).build()
     )
 
     private var useOCR = false
@@ -53,7 +58,6 @@ class ScannerViewModel(config: CameraConfig) : ViewModel() {
     var scanText = mutableStateOf("")
     var scanBarcode = mutableStateOf("")
 
-    var bitmapR = mutableStateOf(Bitmap.createBitmap(10, 10, Bitmap.Config.RGB_565))
 
     var enableTorch: MutableState<Boolean> = mutableStateOf(false)
 
@@ -61,15 +65,25 @@ class ScannerViewModel(config: CameraConfig) : ViewModel() {
         enableTorch.value = !enableTorch.value
     }
 
+    private var enableAnalysis = true
+
+    // 重新识别
+    fun analyzeReStart() {
+        enableAnalysis = true
+    }
+
 
     @SuppressLint("UnsafeOptInUsageError")
     fun analyze() {
 
         imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) { image ->
-            if (image.image == null) {
+            //Log.d("enableAnalysis", "enableAnalysis: $enableAnalysis")
+            if (!enableAnalysis || image.image == null) {
                 image.close()
                 return@setAnalyzer
             }
+
+            enableAnalysis = false
 
             val mediaImage = image.image!!
 
@@ -89,29 +103,42 @@ class ScannerViewModel(config: CameraConfig) : ViewModel() {
 
                         Log.d("zzz", "textRecognizer onSuccess")
                         Log.d("zzzzzz OCR result", "ocr result: $text")
-                        bitmapR.value = bitmap
                         scanText.value = text
+
+                        analyzeReStart()
 
                     }.addOnFailureListener {
                         Log.d("zzz", "onFailure")
-                        bitmapR.value = bitmap
                         scanText.value = "onFailure"
+
+                        analyzeReStart()
                     }
 
             } else {
                 barcodeScanner.process(inputImage)
                     .addOnSuccessListener {
                         Log.d("zzz", "barcodeScanner onSuccess")
-                        it.forEach { code ->
-                            val text = code.displayValue ?: ""
-                            text.isNotEmpty().apply {
-                                scanBarcode.value = text
+
+
+                        val history = getScanHistory(it)
+
+                        history?.apply {
+                            viewModelScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    database.historyDao().insert(history)
+                                }
                             }
-                        }
+                            val json = history.toJson()
+
+                            scanBarcode.value = json
+                        } ?: analyzeReStart()
+
 
                     }.addOnFailureListener {
                         Log.d("zzz", "onFailure")
                         scanBarcode.value = "onFailure"
+
+                        analyzeReStart()
 
                     }
             }
@@ -124,6 +151,47 @@ class ScannerViewModel(config: CameraConfig) : ViewModel() {
 
         }
 
+
+    }
+
+    private fun getScanHistory(list: List<Barcode>): ScanHistory? {
+
+        list.forEach { barcode ->
+            val code = barcode.displayValue ?: ""
+            code.isNotEmpty().apply {
+                val format = barFormat(barcode.format)
+                val type = barcode.valueType
+
+
+                val history = ScanHistory(code = code, format = format, type = type.toString())
+
+                return history
+            }
+        }
+
+        return null
+    }
+
+
+    private fun barFormat(format: Int): String {
+        return when (format) {
+            Barcode.FORMAT_UNKNOWN -> "UNKNOWN"
+            Barcode.FORMAT_ALL_FORMATS -> "ALL_FORMATS"
+            Barcode.FORMAT_CODE_128 -> "CODE_128"
+            Barcode.FORMAT_CODE_39 -> "CODE_39"
+            Barcode.FORMAT_CODE_93 -> "CODE_93"
+            Barcode.FORMAT_CODABAR -> "CODABAR"
+            Barcode.FORMAT_DATA_MATRIX -> "DATA_MATRIX"
+            Barcode.FORMAT_EAN_13 -> "EAN_13"
+            Barcode.FORMAT_EAN_8 -> "EAN_8"
+            Barcode.FORMAT_ITF -> "ITF"
+            Barcode.FORMAT_QR_CODE -> "QR_CODE"
+            Barcode.FORMAT_UPC_A -> "UPC_A"
+            Barcode.FORMAT_UPC_E -> "UPC_E"
+            Barcode.FORMAT_PDF417 -> "PDF417"
+            Barcode.FORMAT_AZTEC -> "AZTEC"
+            else -> ""
+        }
 
     }
 
