@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.zgo.lib.ui.components
 
 import androidx.compose.foundation.layout.Box
@@ -33,10 +35,7 @@ fun ZgoAppBar(
 ) {
 
     var moreMenuExpanded by remember { mutableStateOf(false) }
-    val backgroundColors = TopAppBarDefaults.smallTopAppBarColors()
-    val backgroundColor = backgroundColors.containerColor(
-        scrollFraction = scrollBehavior?.scrollFraction ?: 0f
-    ).value
+
     val foregroundColors = TopAppBarDefaults.smallTopAppBarColors(
         navigationIconContentColor = MaterialTheme.colorScheme.primaryContainer
     )

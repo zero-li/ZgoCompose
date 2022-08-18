@@ -2,7 +2,7 @@ package com.zgo.lib.ui.components
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -53,7 +53,7 @@ fun LazyStaggeredGrid(
     val gridScope = RealLazyStaggeredGridScope(columnCount).apply(content)
 
     // Disable overscroll otherwise it'll only overscroll one column.
-    CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
+    CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
         Row {
             for (index in 0 until columnCount) {
                 LazyColumn(

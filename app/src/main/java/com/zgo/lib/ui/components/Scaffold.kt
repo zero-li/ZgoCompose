@@ -1,10 +1,8 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 
 package com.zgo.lib.ui.components
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
@@ -17,7 +15,7 @@ import com.zgo.lib.ui.theme.AppTheme
 
 
 /*
- * 
+ * https://github.dev/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/ListItem.kt
  * 
  * @author: zhhli
  * @date: 22/1/18
@@ -36,17 +34,27 @@ fun ZgoScaffold(
     content: @Composable (PaddingValues) -> Unit
 
 ) {
-//    val scrollBehavior = remember { TopAppBarDefaults.pinnedScrollBehavior() }
+
 
     Scaffold(
-//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier,
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = snackbarHost,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
         contentColor = contentColor,
-        content = content
+//        content = content
+
+        content = {
+            Box(
+                modifier = Modifier
+                    .consumedWindowInsets(it)
+                    .padding(it)
+            ) {
+                content(it)
+            }
+        }
 
     )
 //    {
@@ -72,7 +80,6 @@ fun ZgoScaffold(
 
 }
 
-@ExperimentalMaterial3Api
 @Preview
 @Composable
 fun ZgoScaffoldPreview() {

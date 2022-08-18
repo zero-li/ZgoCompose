@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.zgo.cookbook.ui.md3.text_field
 
 import androidx.compose.foundation.background
@@ -24,7 +26,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.error
@@ -365,7 +366,8 @@ fun CustomTextFieldBasedOnDecorationBox() {
             onValueChange = onValueChange,
             modifier = modifier
                 .background(
-                    color = colors.backgroundColor(enabled).value,
+//                    color = colors.backgroundColor(enabled).value,
+                    color = colors.containerColor(enabled).value,
                     shape = RoundedCornerShape(
                         topStart = 4.0.dp,
                         topEnd = 4.0.dp,
@@ -446,15 +448,7 @@ fun CustomOutlinedTextFieldBasedOnDecorationBox() {
                 ),
                 // update border thickness and shape
                 border = {
-                    TextFieldDefaults.BorderStroke(
-                        enabled = enabled,
-                        isError = false,
-                        colors = colors,
-                        interactionSource = interactionSource,
-                        shape = RectangleShape,
-                        unfocusedBorderThickness = 2.dp,
-                        focusedBorderThickness = 4.dp
-                    )
+                    TextFieldDefaults.outlinedShape
                 },
                 // update border colors
                 colors = colors

@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.zgo.cookbook.ui.main
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BusinessCenter
 import androidx.compose.material.icons.filled.Science
@@ -48,7 +47,6 @@ fun CookMainPage(
         NavHost(
             navController = navBottomBar,
             startDestination = BottomNavItem.Widgets.screen_route,
-            Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Widgets.screen_route) {
                 WidgetsPage(navigate)
