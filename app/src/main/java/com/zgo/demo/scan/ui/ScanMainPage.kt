@@ -3,7 +3,6 @@
 package com.zgo.demo.scan.ui
 
 import android.net.Uri
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.QrCodeScanner
@@ -50,7 +49,7 @@ fun ScanMainPage(
         NavHost(
             navController = navBottomBar,
             startDestination = BottomNavItem.Scanner.screen_route,
-            Modifier.padding(innerPadding)
+//            Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Scanner.screen_route) {
                 ScannerPage() {
