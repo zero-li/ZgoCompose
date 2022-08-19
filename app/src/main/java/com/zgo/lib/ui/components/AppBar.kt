@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 import com.zgo.lib.ui.theme.AppTheme
 
 
@@ -97,8 +96,6 @@ fun ZgoAppBar(
         scrollBehavior = scrollBehavior,
 //        colors = foregroundColors,
         modifier = Modifier
-            .statusBarsPadding()
-            .navigationBarsPadding(bottom = false)
     )
 
 }

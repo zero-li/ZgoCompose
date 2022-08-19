@@ -2,6 +2,10 @@
 
 package com.zgo.cookbook.ui.main
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BusinessCenter
 import androidx.compose.material.icons.filled.Science
@@ -13,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.insets.navigationBarsPadding
 import com.zgo.lib.ui.components.AbsBottomNavItem
 import com.zgo.lib.ui.components.ZgoBottomNavigation
 import com.zgo.lib.ui.components.ZgoScaffold
@@ -33,7 +36,8 @@ fun CookMainPage(
     val navBottomBar = rememberNavController()
 
     ZgoScaffold(
-        modifier = Modifier.navigationBarsPadding(),
+        modifier = Modifier
+            .statusBarsPadding(),
         bottomBar = {
             val items = listOf(
                 BottomNavItem.Widgets,
@@ -47,6 +51,8 @@ fun CookMainPage(
         NavHost(
             navController = navBottomBar,
             startDestination = BottomNavItem.Widgets.screen_route,
+            // fix bottom padding
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Widgets.screen_route) {
                 WidgetsPage(navigate)

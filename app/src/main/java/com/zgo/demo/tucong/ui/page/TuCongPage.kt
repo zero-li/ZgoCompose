@@ -59,7 +59,7 @@ fun TuCongPage(
             })
         }) {
 
-        SwipeRefreshList(lazyItems) {
+        SwipeRefreshList(lazyItems, modifier = Modifier.padding(paddingValues = it)) {
             items(lazyItems) { item ->
                 item?.let {
                     ImageCard(feed = it)

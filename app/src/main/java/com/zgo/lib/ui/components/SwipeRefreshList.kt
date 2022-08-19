@@ -36,81 +36,83 @@ import kotlinx.coroutines.launch
  */
 @Composable
 fun <T : Any> SwipeRefreshList(
- collectAsLazyPagingItems: LazyPagingItems<T>,
- listContent: LazyListScope.() -> Unit,
+    collectAsLazyPagingItems: LazyPagingItems<T>,
+    modifier: Modifier = Modifier,
+    listContent: LazyListScope.() -> Unit,
+
 ) {
- val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+    val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
 
- SwipeRefresh(
-  state = rememberSwipeRefreshState,
-  onRefresh = { collectAsLazyPagingItems.refresh() }
- ) {
-  val lazyListState = rememberLazyListState()
+    SwipeRefresh(
+        state = rememberSwipeRefreshState,
+        onRefresh = { collectAsLazyPagingItems.refresh() }
+    ) {
+        val lazyListState = rememberLazyListState()
 
-  val coroutineScope = rememberCoroutineScope()
+        val coroutineScope = rememberCoroutineScope()
 
-  rememberSwipeRefreshState.isRefreshing =
-   collectAsLazyPagingItems.loadState.refresh is LoadState.Loading
+        rememberSwipeRefreshState.isRefreshing =
+            collectAsLazyPagingItems.loadState.refresh is LoadState.Loading
 
-  LazyColumn(
-   state = lazyListState,
-   modifier = Modifier
-    .fillMaxWidth()
-    .fillMaxHeight(),
+        LazyColumn(
+            state = lazyListState,
+            modifier = modifier
+             .fillMaxWidth()
+             .fillMaxHeight(),
 
-   ) {
-   listContent()
-   collectAsLazyPagingItems.apply {
-    when {
-     loadState.append is LoadState.Loading -> {
-      //加载更多，底部loading
-      item { LoadingItem() }
-     }
-     loadState.append is LoadState.Error -> {
-      //加载更多异常
-      item {
-       ErrorMoreRetryItem {
-        collectAsLazyPagingItems.retry()
-       }
-      }
-     }
+            ) {
+            listContent()
+            collectAsLazyPagingItems.apply {
+                when {
+                    loadState.append is LoadState.Loading -> {
+                        //加载更多，底部loading
+                        item { LoadingItem() }
+                    }
+                    loadState.append is LoadState.Error -> {
+                        //加载更多异常
+                        item {
+                            ErrorMoreRetryItem {
+                                collectAsLazyPagingItems.retry()
+                            }
+                        }
+                    }
 
-     loadState.append == LoadState.NotLoading(endOfPaginationReached = true) -> {
-      // 已经没有更多数据了
-      item {
-       NoMoreDataFindItem(onClick = {
-        coroutineScope.launch {
-         lazyListState.animateScrollToItem(0)
+                    loadState.append == LoadState.NotLoading(endOfPaginationReached = true) -> {
+                        // 已经没有更多数据了
+                        item {
+                            NoMoreDataFindItem(onClick = {
+                                coroutineScope.launch {
+                                    lazyListState.animateScrollToItem(0)
+                                }
+                            })
+                        }
+                    }
+
+                    loadState.refresh is LoadState.Error -> {
+                        if (collectAsLazyPagingItems.itemCount <= 0) {
+                            //刷新的时候，如果itemCount小于0，第一次加载异常
+                            item {
+                                ErrorContent {
+                                    collectAsLazyPagingItems.retry()
+                                }
+                            }
+                        } else {
+                            item {
+                                ErrorMoreRetryItem {
+                                    collectAsLazyPagingItems.retry()
+                                }
+                            }
+                        }
+                    }
+                    loadState.refresh is LoadState.Loading -> {
+                        // 第一次加载且正在加载中
+                        if (collectAsLazyPagingItems.itemCount == 0) {
+                        }
+                    }
+                }
+            }
         }
-       })
-      }
-     }
-
-     loadState.refresh is LoadState.Error -> {
-      if (collectAsLazyPagingItems.itemCount <= 0) {
-       //刷新的时候，如果itemCount小于0，第一次加载异常
-       item {
-        ErrorContent {
-         collectAsLazyPagingItems.retry()
-        }
-       }
-      } else {
-       item {
-        ErrorMoreRetryItem {
-         collectAsLazyPagingItems.retry()
-        }
-       }
-      }
-     }
-     loadState.refresh is LoadState.Loading -> {
-      // 第一次加载且正在加载中
-      if (collectAsLazyPagingItems.itemCount == 0) {
-      }
-     }
     }
-   }
-  }
- }
 }
 
 /**
@@ -118,42 +120,42 @@ fun <T : Any> SwipeRefreshList(
  * */
 @Composable
 fun ErrorMoreRetryItem(retry: () -> Unit) {
- TextButton(
-  modifier = Modifier
-   .padding(top = 5.dp)
-   .fillMaxWidth()
-   .height(35.dp),
-  onClick = { retry() },
-  shape = RoundedCornerShape(0.dp),
-  contentPadding = PaddingValues(3.dp),
-  colors = textButtonColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+    TextButton(
+        modifier = Modifier
+         .padding(top = 5.dp)
+         .fillMaxWidth()
+         .height(35.dp),
+        onClick = { retry() },
+        shape = RoundedCornerShape(0.dp),
+        contentPadding = PaddingValues(3.dp),
+        colors = textButtonColors(containerColor = MaterialTheme.colorScheme.errorContainer),
 //   elevation = buttonElevation(
 //    defaultElevation = 2.dp,
 //    pressedElevation = 4.dp,
 //   ),
- ) {
-  Text(text = "请重试", color = MaterialTheme.colorScheme.onErrorContainer)
- }
+    ) {
+        Text(text = "请重试", color = MaterialTheme.colorScheme.onErrorContainer)
+    }
 }
 
 @Composable
 fun NoMoreDataFindItem(onClick: () -> Unit) {
- TextButton(
-  onClick = { onClick() },
-  modifier = Modifier
-   .padding(top = 5.dp)
-   .fillMaxWidth()
-   .height(35.dp),
-  shape = RoundedCornerShape(0.dp),
-  contentPadding = PaddingValues(3.dp),
-  colors = textButtonColors(containerColor = MaterialTheme.colorScheme.onSurfaceVariant),
-  elevation = buttonElevation(
-   defaultElevation = 2.dp,
-   pressedElevation = 4.dp,
-  ),
- ) {
-  Text(text = "已经没有更多数据啦 ~~ Click to top", color = MaterialTheme.colorScheme.surfaceVariant)
- }
+    TextButton(
+        onClick = { onClick() },
+        modifier = Modifier
+         .padding(top = 5.dp)
+         .fillMaxWidth()
+         .height(35.dp),
+        shape = RoundedCornerShape(0.dp),
+        contentPadding = PaddingValues(3.dp),
+        colors = textButtonColors(containerColor = MaterialTheme.colorScheme.onSurfaceVariant),
+        elevation = buttonElevation(
+            defaultElevation = 2.dp,
+            pressedElevation = 4.dp,
+        ),
+    ) {
+        Text(text = "已经没有更多数据啦 ~~ Click to top", color = MaterialTheme.colorScheme.surfaceVariant)
+    }
 }
 
 
@@ -162,36 +164,36 @@ fun NoMoreDataFindItem(onClick: () -> Unit) {
  * */
 @Composable
 fun ErrorContent(retry: () -> Unit) {
- Column(
-  modifier = Modifier
-   .fillMaxSize()
-   .background(color = MaterialTheme.colorScheme.surfaceVariant)
-   .padding(top = 100.dp),
-  verticalArrangement = Arrangement.Center,
-  horizontalAlignment = Alignment.CenterHorizontally
- ) {
-  Image(
-   modifier = Modifier.padding(top = 80.dp),
-   painter = painterResource(id = R.drawable.ic_launcher_foreground),
-   contentDescription = null
-  )
-  Text(text = "请求失败，请检查网络", modifier = Modifier.padding(8.dp))
-  TextButton(
-   onClick = { retry() },
-   modifier = Modifier
-    .padding(20.dp)
-    .width(80.dp)
-    .height(30.dp),
-   shape = RoundedCornerShape(10.dp),
-   contentPadding = PaddingValues(5.dp),
-   colors = textButtonColors(containerColor = MaterialTheme.colorScheme.primary),
-   elevation = buttonElevation(
-    defaultElevation = 2.dp,
-    pressedElevation = 4.dp,
-   )
-   //colors = ButtonDefaults
-  ) { Text(text = "重试", color = MaterialTheme.colorScheme.onPrimary) }
- }
+    Column(
+        modifier = Modifier
+         .fillMaxSize()
+         .background(color = MaterialTheme.colorScheme.surfaceVariant)
+         .padding(top = 100.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier.padding(top = 80.dp),
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = null
+        )
+        Text(text = "请求失败，请检查网络", modifier = Modifier.padding(8.dp))
+        TextButton(
+            onClick = { retry() },
+            modifier = Modifier
+             .padding(20.dp)
+             .width(80.dp)
+             .height(30.dp),
+            shape = RoundedCornerShape(10.dp),
+            contentPadding = PaddingValues(5.dp),
+            colors = textButtonColors(containerColor = MaterialTheme.colorScheme.primary),
+            elevation = buttonElevation(
+                defaultElevation = 2.dp,
+                pressedElevation = 4.dp,
+            )
+            //colors = ButtonDefaults
+        ) { Text(text = "重试", color = MaterialTheme.colorScheme.onPrimary) }
+    }
 }
 
 /**
@@ -199,44 +201,44 @@ fun ErrorContent(retry: () -> Unit) {
  * */
 @Composable
 fun LoadingItem() {
- Row(
-  modifier = Modifier
-   .padding(5.dp)
-   .height(35.dp)
-   .fillMaxWidth()
-   .background(color = MaterialTheme.colorScheme.surfaceVariant),
-  horizontalArrangement = Arrangement.Center
- ) {
-  CircularProgressIndicator(
-   modifier = Modifier
-    .size(24.dp),
-   color = MaterialTheme.colorScheme.onSurfaceVariant,
-   strokeWidth = 2.dp
-  )
-  Text(
-   text = "加载中...",
-   color = MaterialTheme.colorScheme.onSurfaceVariant,
-   modifier = Modifier
-    .fillMaxHeight()
-    .padding(start = 20.dp),
-  )
- }
+    Row(
+        modifier = Modifier
+         .padding(5.dp)
+         .height(35.dp)
+         .fillMaxWidth()
+         .background(color = MaterialTheme.colorScheme.surfaceVariant),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(24.dp),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            strokeWidth = 2.dp
+        )
+        Text(
+            text = "加载中...",
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier
+             .fillMaxHeight()
+             .padding(start = 20.dp),
+        )
+    }
 }
 
 @Preview
 @Composable
 fun Preview2() {
 
- Column {
+    Column {
 
 // ErrorContent(retry = {})
-  ErrorMoreRetryItem(retry = {})
-  NoMoreDataFindItem(onClick = {})
+        ErrorMoreRetryItem(retry = {})
+        NoMoreDataFindItem(onClick = {})
 
 
-  LoadingItem()
+        LoadingItem()
 
- }
+    }
 
 
 }
