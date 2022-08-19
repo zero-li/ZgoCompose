@@ -48,12 +48,7 @@ fun Example(
             modifier = Modifier
                 .fillMaxSize()
                 .consumedWindowInsets(paddingValues)
-//                .statusBarsHeight()
-                .padding(paddingValues)
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing
-                        .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
-                ),
+                .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {
             example.content()
