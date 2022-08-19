@@ -1,0 +1,128 @@
+//plugins {
+//    id 'org.jetbrains.kotlin.android'
+//    id 'kotlin-kapt'
+//    id 'kotlin-parcelize'
+//}
+
+
+
+
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+
+
+
+
+
+    implementation "androidx.compose.ui:ui:$compose_version"
+//    implementation "androidx.compose.compiler:compiler:1.3.0"
+// Tooling support (Previews, etc.)
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+// Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+// Material Design
+//    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material3:material3:1.0.0-alpha16"
+
+// Material design icons
+    implementation "androidx.compose.material:material-icons-core:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+// Integration with activities
+    implementation "androidx.activity:activity-compose:1.5.1"
+// Integration with ViewModels
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+// Integration with observables
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+    // crash 2.5.0-beta01   2.4.2
+    // https://github.com/android/compose-samples/issues/805
+    implementation "androidx.navigation:navigation-compose:2.5.1"
+
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+
+
+    // room
+    // https://developer.android.google.cn/training/data-storage/room
+    // https://github.com/google-developer-training/android-basics-kotlin-inventory-app
+    def room_version = "2.4.3"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+
+
+    //paging分页库
+    def paging_version = "3.1.1"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    testImplementation "androidx.paging:paging-common:$paging_version"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
+
+
+    def accompanistVersion = "0.23.1"
+    /** accompanist辅助插件 */
+    implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
+    implementation "com.google.accompanist:accompanist-coil:0.15.0"
+    //系统ui控制器
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
+    //viewPager
+    implementation "com.google.accompanist:accompanist-pager:$accompanistVersion"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanistVersion"
+    //下拉刷新
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanistVersion"
+    //流式布局
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
+    //placeholder
+    implementation "com.google.accompanist:accompanist-placeholder-material:$accompanistVersion"
+    //permissions
+    implementation "com.google.accompanist:accompanist-permissions:$accompanistVersion"
+
+
+    // 图片加载
+    implementation("io.coil-kt:coil-compose:2.0.0")
+
+
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //okHttp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
+
+    def camerax_version = '1.2.0-alpha04'
+    implementation "androidx.camera:camera-camera2:$camerax_version"
+    implementation "androidx.camera:camera-lifecycle:$camerax_version"
+    implementation "androidx.camera:camera-view:$camerax_version"
+
+    implementation "com.google.mlkit:barcode-scanning:17.0.2"
+    implementation "com.google.mlkit:text-recognition:16.0.0-beta4"
+    implementation "com.google.mlkit:text-recognition-chinese:16.0.0-beta4"
+
+
+
+    implementation("androidx.annotation:annotation:1.4.0")
+
+
+
+// UI Tests
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+}
