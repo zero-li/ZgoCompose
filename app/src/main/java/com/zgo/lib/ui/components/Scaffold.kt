@@ -5,10 +5,14 @@ package com.zgo.lib.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zgo.lib.ui.theme.AppTheme
@@ -35,26 +39,20 @@ fun ZgoScaffold(
 
 ) {
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = snackbarHost,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = floatingActionButtonPosition,
         contentColor = contentColor,
-//        content = content
+        content = content
 
-        content = {
-            Box(
-                modifier = Modifier
-                    .consumedWindowInsets(it)
-                    .padding(it)
-            ) {
-                content(it)
-            }
-        }
+
 
     )
 //    {
@@ -72,10 +70,19 @@ fun ZgoScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     ZgoScaffold(
+        modifier = Modifier.statusBarsPadding(),
         topBar = {
             ZgoAppBar(title = title, onBack = onBackClick)
         },
-        content = content
+        content = {
+            Box(
+                modifier = Modifier
+                    .consumedWindowInsets(it)
+                    .padding(it)
+            ) {
+                content(it)
+            }
+        }
     )
 
 }

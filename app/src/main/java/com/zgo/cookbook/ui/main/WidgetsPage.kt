@@ -1,4 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalLayoutApi::class
+)
 
 package com.zgo.cookbook.ui.main
 
@@ -11,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.systemBarsPadding
 import com.zgo.cookbook.data.CookWidget
@@ -31,44 +35,60 @@ import com.zgo.lib.ui.components.gridItems
 fun WidgetsPage(
     navigate: (routeName: String) -> Unit,
 ) {
-    ZgoScaffold(modifier = Modifier.systemBarsPadding(),
+    ZgoScaffold(
+//        modifier = Modifier.statusBarsPadding(),
         topBar = {
             SmallTopAppBar(title = {
                 Text(text = "组件")
             })
-        }) {
-        LazyColumn(
-            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        }
+    ) { paddingValues ->
+
+        Box(
+            modifier = Modifier
+                .consumedWindowInsets(paddingValues)
+                .padding(paddingValues)
+                .statusBarsPadding(),
         ) {
 
-            stickyHeader {
-                TitleItem("自定义组件")
-            }
-            gridItems(ThirdWidgets, 2) { widget ->
-                WidgetItem(widgetData = widget, navigate)
-            }
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
 
-            stickyHeader {
-                TitleItem("Md3组件")
-            }
-            gridItems(Md3Widgets, 2) { widget ->
-                WidgetItem(widgetData = widget, navigate)
-            }
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
 
-            stickyHeader {
-                TitleItem("布局")
-            }
-            gridItems(layoutWidgets, 2) { widget ->
-                WidgetItem(widgetData = widget, navigate)
+                stickyHeader {
+                    TitleItem("自定义组件")
+                }
+                gridItems(ThirdWidgets, 2) { widget ->
+                    WidgetItem(widgetData = widget, navigate)
+                }
+
+                stickyHeader {
+                    TitleItem("Md3组件")
+                }
+                gridItems(Md3Widgets, 2) { widget ->
+                    WidgetItem(widgetData = widget, navigate)
+                }
+
+                stickyHeader {
+                    TitleItem("布局")
+                }
+                gridItems(layoutWidgets, 2) { widget ->
+                    WidgetItem(widgetData = widget, navigate)
+                }
+
+
             }
 
 
         }
-
-
     }
+
 }
+
+
+
 
 
 @Composable

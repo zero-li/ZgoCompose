@@ -1,7 +1,8 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
 package com.zgo.lib.ui.base
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.zgo.cookbook.ui.main.TitleItem
 import com.zgo.demo.R
 import com.zgo.lib.ui.components.ZgoScaffold
 import com.zgo.lib.ui.theme.color.ChColor
@@ -47,7 +49,9 @@ fun ColorPage() {
     {
 
         LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-
+            stickyHeader {
+                TitleItem("自定义组件")
+            }
 
             val items = zgoColorRandomList
 

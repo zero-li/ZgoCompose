@@ -35,6 +35,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -83,10 +84,8 @@ fun CatalogScaffold(
             scrimColor = SheetScrimColor
         ) {
             val context = LocalContext.current
-            // TODO lzh
-            //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+            val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
             Scaffold(
-                modifier = Modifier.statusBarsPadding(),
                 topBar = {
                     CatalogTopAppBar(
                         title = topBarTitle,
@@ -103,8 +102,10 @@ fun CatalogScaffold(
                         onLicensesClick = { context.openUrl(licensesUrl) }
                     )
                 },
-                // TODO lzh
-//                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                modifier = Modifier
+                    .nestedScroll(scrollBehavior.nestedScrollConnection)
+                    .statusBarsPadding()
+                ,
                 content = content
             )
         }

@@ -44,14 +44,15 @@ fun HomePage(
     val lazyItem = viewmodel.pagingHomeArticle.collectAsLazyPagingItems()
 
     ZgoScaffold(
-        modifier = Modifier.systemBarsPadding(),
+        modifier = Modifier
+            .statusBarsPadding(),
         topBar = {
             SmallTopAppBar(title = {
                 Text(text = "首页")
             })
         }) {
 
-        SwipeRefreshList(lazyItem) {
+        SwipeRefreshList(lazyItem, modifier = Modifier.padding(paddingValues = it)) {
 
             items(lazyItem) { item ->
 
