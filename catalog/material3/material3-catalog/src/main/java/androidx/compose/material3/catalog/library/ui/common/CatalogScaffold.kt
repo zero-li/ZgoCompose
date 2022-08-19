@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package androidx.compose.material3.catalog.library.ui.common
 
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -29,6 +33,7 @@ import androidx.compose.material3.catalog.library.util.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -81,6 +86,7 @@ fun CatalogScaffold(
             // TODO lzh
             //val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
             Scaffold(
+                modifier = Modifier.statusBarsPadding(),
                 topBar = {
                     CatalogTopAppBar(
                         title = topBarTitle,

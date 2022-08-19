@@ -120,11 +120,6 @@ fun CatalogTopAppBar(
             }
         },
         scrollBehavior = scrollBehavior,
-        // add zgo
-        modifier = Modifier
-//            .statusBarsPadding()
-            .statusBarsPadding()
-            .navigationBarsPadding(bottom = false)
     )
 }
 
