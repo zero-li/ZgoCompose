@@ -14,3 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ZgoDemo"
 include ':app'
+include ":catalog:integration-tests:material-catalog"
+include ":catalog:material:samples"
+include ":catalog:material:material-catalog"
+include ":catalog:material3:samples"
+include ":catalog:material3:material3-catalog"
+//include ":catalog:annotation-sampled"
+include ':catalog:annotation-sampled'
