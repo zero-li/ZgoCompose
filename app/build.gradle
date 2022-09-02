@@ -40,6 +40,9 @@ android {
     }
     buildFeatures {
         compose true
+        kotlinOptions.freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
+        kotlinOptions.freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
+
     }
     composeOptions {
         //kotlinCompilerExtensionVersion compose_version
@@ -55,7 +58,4 @@ android {
 
 apply from: '../deps_build.gradle'
 
-dependencies {
-    implementation project(":catalog:material3:samples")
 
-}
