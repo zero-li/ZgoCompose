@@ -12,16 +12,17 @@
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
 
 
+    def compose_version = "1.3.0"
 
 
 
@@ -34,13 +35,13 @@ dependencies {
     implementation "androidx.compose.foundation:foundation:$compose_version"
 // Material Design
     implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.material3:material3:1.0.0-alpha16"
+    implementation "androidx.compose.material3:material3:1.0.1"
 
 // Material design icons
     implementation "androidx.compose.material:material-icons-core:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
 // Integration with activities
-    implementation "androidx.activity:activity-compose:1.5.1"
+    implementation "androidx.activity:activity-compose:1.6.1"
 // Integration with ViewModels
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 // Integration with observables
@@ -48,7 +49,7 @@ dependencies {
 
     // crash 2.5.0-beta01   2.4.2
     // https://github.com/android/compose-samples/issues/805
-    implementation "androidx.navigation:navigation-compose:2.5.1"
+    implementation "androidx.navigation:navigation-compose:2.5.3"
 
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
@@ -74,7 +75,7 @@ dependencies {
 
     implementation "androidx.paging:paging-runtime:$paging_version"
     testImplementation "androidx.paging:paging-common:$paging_version"
-    implementation "androidx.paging:paging-compose:1.0.0-alpha16"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
 
 
     def accompanistVersion = "0.23.1"

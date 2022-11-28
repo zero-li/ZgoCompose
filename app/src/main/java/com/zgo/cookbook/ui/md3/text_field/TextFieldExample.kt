@@ -26,6 +26,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.error
@@ -360,27 +361,10 @@ fun CustomTextFieldBasedOnDecorationBox() {
         val singleLine = true
         val passwordTransformation = PasswordVisualTransformation()
 
-        val colors = TextFieldDefaults.textFieldColors()
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            modifier = modifier
-                .background(
-//                    color = colors.backgroundColor(enabled).value,
-                    color = colors.containerColor(enabled).value,
-                    shape = RoundedCornerShape(
-                        topStart = 4.0.dp,
-                        topEnd = 4.0.dp,
-                        bottomEnd = 0.0.dp,
-                        bottomStart = 0.0.dp
-                    )
-                )
-                .indicatorLine(
-                    enabled = enabled,
-                    isError = false,
-                    interactionSource = interactionSource,
-                    colors = colors
-                ),
+            modifier = modifier,
             visualTransformation = passwordTransformation,
             // internal implementation of the BasicTextField will dispatch focus events
             interactionSource = interactionSource,
@@ -396,12 +380,14 @@ fun CustomTextFieldBasedOnDecorationBox() {
                 // same interaction source as the one passed to BasicTextField to read focus state
                 // for text field styling
                 interactionSource = interactionSource,
-                // keep vertical paddings but change the horizontal
+                supportingText = { Text("Supporting text") },
+                // keep horizontal paddings but change the vertical
                 contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
-                    start = 8.dp, end = 8.dp
-                )
+                    top = 8.dp, bottom = 8.dp
+                ),
             )
         }
+
     }
 }
 
@@ -442,17 +428,27 @@ fun CustomOutlinedTextFieldBasedOnDecorationBox() {
                 // same interaction source as the one passed to BasicTextField to read focus state
                 // for text field styling
                 interactionSource = interactionSource,
-                // keep vertical paddings but change the horizontal
+                supportingText = { Text("Supporting text") },
+                // keep horizontal paddings but change the vertical
                 contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
-                    start = 8.dp, end = 8.dp
+                    top = 8.dp, bottom = 8.dp
                 ),
-                // update border thickness and shape
-                border = {
-                    TextFieldDefaults.outlinedShape
-                },
                 // update border colors
-                colors = colors
+                colors = colors,
+                // update border thickness and shape
+                container = {
+                    TextFieldDefaults.OutlinedBorderContainerBox(
+                        enabled = enabled,
+                        isError = false,
+                        colors = colors,
+                        interactionSource = interactionSource,
+                        shape = RectangleShape,
+                        unfocusedBorderThickness = 2.dp,
+                        focusedBorderThickness = 4.dp
+                    )
+                },
             )
         }
     }
 }
+
