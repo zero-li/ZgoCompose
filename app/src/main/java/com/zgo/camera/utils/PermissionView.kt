@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionRequired
@@ -21,7 +21,7 @@ import com.google.accompanist.permissions.rememberPermissionState
  * @date: 22/7/26
  */
 
-@ExperimentalPermissionsApi
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PermissionView(
     permission: String = android.Manifest.permission.CAMERA,
@@ -57,7 +57,7 @@ private fun Rationale(
             Text(text)
         },
         confirmButton = {
-            Button(onClick = onRequestPermission) {
+            TextButton(onClick = onRequestPermission) {
                 Text("确定")
             }
         }
