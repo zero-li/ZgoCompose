@@ -57,7 +57,6 @@ dependencies {
     def accompanistVersion = "0.23.1"
     implementation "com.google.accompanist:accompanist-permissions:$accompanistVersion"
     implementation "com.google.accompanist:accompanist-placeholder-material:$accompanistVersion"
-    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanistVersion"
 
     // room
     // https://developer.android.google.cn/training/data-storage/room
