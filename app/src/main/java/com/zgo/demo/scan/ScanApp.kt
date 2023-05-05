@@ -2,7 +2,6 @@ package com.zgo.demo.scan
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.zgo.demo.scan.data.db.ScanRoomDatabase
 import com.zgo.lib.ui.theme.AppTheme
 
@@ -26,11 +25,9 @@ fun ScanApp() {
 
     database = database2
 
-    ProvideWindowInsets {
-        AppTheme {
-            ScanNavGraph()
+    AppTheme {
+        ScanNavGraph()
 
-        }
     }
 
 

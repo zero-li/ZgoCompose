@@ -1,7 +1,6 @@
 package com.zgo.cookbook
 
 import androidx.compose.runtime.Composable
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.zgo.lib.ui.theme.AppTheme
 
 
@@ -13,11 +12,9 @@ import com.zgo.lib.ui.theme.AppTheme
  */
 @Composable
 fun CookbookApp() {
-    ProvideWindowInsets {
-        AppTheme {
-            CookNavGraph()
+    AppTheme {
+        CookNavGraph()
 
-        }
     }
 
 
