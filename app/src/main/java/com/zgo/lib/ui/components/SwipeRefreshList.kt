@@ -1,5 +1,6 @@
 package com.zgo.lib.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,14 +8,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ButtonDefaults.buttonElevation
 import androidx.compose.material3.ButtonDefaults.textButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,8 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.zgo.demo.R
 import kotlinx.coroutines.launch
 
@@ -41,18 +42,25 @@ fun <T : Any> SwipeRefreshList(
     listContent: LazyListScope.() -> Unit,
 
 ) {
-    val rememberSwipeRefreshState = rememberSwipeRefreshState(isRefreshing = false)
+    val refreshing =
+        collectAsLazyPagingItems.loadState.refresh is LoadState.Loading
 
-    SwipeRefresh(
-        state = rememberSwipeRefreshState,
-        onRefresh = { collectAsLazyPagingItems.refresh() }
+    //var refreshing by remember { mutableStateOf( collectAsLazyPagingItems.loadState.refresh is LoadState.Loading) }
+
+    val state = rememberPullRefreshState(refreshing, onRefresh = {collectAsLazyPagingItems.refresh()})
+
+
+
+    Box(
+        Modifier
+            .fillMaxSize()
+            .pullRefresh(state )
     ) {
         val lazyListState = rememberLazyListState()
 
         val coroutineScope = rememberCoroutineScope()
 
-        rememberSwipeRefreshState.isRefreshing =
-            collectAsLazyPagingItems.loadState.refresh is LoadState.Loading
+
 
         LazyColumn(
             state = lazyListState,
@@ -112,6 +120,10 @@ fun <T : Any> SwipeRefreshList(
                 }
             }
         }
+
+        //Log.d("SwipeRefreshList", "refreshing: $refreshing")
+        PullRefreshIndicator(refreshing, state, Modifier.align(Alignment.TopCenter))
+
     }
 }
 
