@@ -3,7 +3,6 @@ package com.zgo.demo.ui
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.zgo.lib.ui.theme.AppTheme
 
 
@@ -16,10 +15,8 @@ import com.zgo.lib.ui.theme.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
-    ProvideWindowInsets {
-        AppTheme {
-            NavGraph()
-        }
+    AppTheme {
+        NavGraph()
     }
 
 

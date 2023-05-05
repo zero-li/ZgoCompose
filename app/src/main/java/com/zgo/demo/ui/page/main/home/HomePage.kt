@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.google.accompanist.insets.systemBarsPadding
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -44,8 +43,6 @@ fun HomePage(
     val lazyItem = viewmodel.pagingHomeArticle.collectAsLazyPagingItems()
 
     ZgoScaffold(
-        modifier = Modifier
-            .statusBarsPadding(),
         topBar = {
             SmallTopAppBar(title = {
                 Text(text = "首页")

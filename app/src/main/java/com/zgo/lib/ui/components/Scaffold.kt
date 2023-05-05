@@ -70,7 +70,7 @@ fun ZgoScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     ZgoScaffold(
-        modifier = Modifier.statusBarsPadding(),
+        //modifier = Modifier.statusBarsPadding(),
         topBar = {
             ZgoAppBar(title = title, onBack = onBackClick)
         },

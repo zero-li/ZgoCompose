@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.insets.navigationBarsPadding
 import com.zgo.demo.scan.ui.scanner.ScannerPage
+import com.zgo.demo.scan.ui.setting.SettingPage
 import com.zgo.lib.ui.components.AbsBottomNavItem
 import com.zgo.lib.ui.components.ZgoBottomNavigation
 import com.zgo.lib.ui.components.ZgoScaffold
