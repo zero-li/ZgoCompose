@@ -2,8 +2,19 @@
 
 package com.zgo.demo.ui.page.main.home
 
+
+
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SmallTopAppBar
@@ -16,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
@@ -51,9 +61,9 @@ fun HomePage(
 
         SwipeRefreshList(lazyItem, modifier = Modifier.padding(paddingValues = it)) {
 
-            items(lazyItem) { item ->
+            items(lazyItem.itemCount) { index ->
 
-                item?.apply {
+                lazyItem[index]?.apply {
                     Item(
                         this, Modifier.placeholder(
                             visible = false,

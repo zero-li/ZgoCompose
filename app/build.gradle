@@ -10,12 +10,13 @@ plugins {
 
 
 android {
-    compileSdk 33
+    namespace = "com.zgo.demo"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.zgo.demo"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -46,7 +47,7 @@ android {
     }
     composeOptions {
         //kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerExtensionVersion '1.4.2'
+        kotlinCompilerExtensionVersion '1.5.4'
     }
     packagingOptions {
         resources {

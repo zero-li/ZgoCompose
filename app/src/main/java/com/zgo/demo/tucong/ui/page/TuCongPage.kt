@@ -21,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.Parameters
@@ -56,12 +55,15 @@ fun TuCongPage(
             SmallTopAppBar(title = {
                 Text(text = "图虫")
             })
-        }) {
+        }) { it ->
 
         SwipeRefreshList(lazyItems, modifier = Modifier.padding(paddingValues = it)) {
-            items(lazyItems) { item ->
-                item?.let {
-                    ImageCard(feed = it)
+
+            items(lazyItems.itemCount) { index ->
+                lazyItems[index]?.apply {
+                    if(this.images.isNotEmpty()){
+                        ImageCard(feed = this)
+                    }
                 }
 
             }
