@@ -34,11 +34,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zgo.camera.utils.ImageUtils
 import com.zgo.camera.utils.PermissionView
@@ -372,8 +372,24 @@ fun cropTextImage(imageProxy: ImageProxy): Bitmap? {
     val imageWidth = mediaImage.width
 
     val cropRect = when (rotationDegrees) {
-        90, 270 -> getCropRect90(imageHeight.toFloat(), imageWidth.toFloat()).toAndroidRect()
-        else -> getCropRect(imageHeight.toFloat(), imageWidth.toFloat()).toAndroidRect()
+        90, 270 -> {
+            val cropRect90 = getCropRect90(imageHeight.toFloat(), imageWidth.toFloat())
+            android.graphics.Rect(
+                cropRect90.left.toInt(),
+                cropRect90.top.toInt(),
+                cropRect90.right.toInt(),
+                cropRect90.bottom.toInt()
+            )
+        }
+        else -> {
+            val cropRect1 = getCropRect(imageHeight.toFloat(), imageWidth.toFloat())
+            android.graphics.Rect(
+                cropRect1.left.toInt(),
+                cropRect1.top.toInt(),
+                cropRect1.right.toInt(),
+                cropRect1.bottom.toInt()
+            )
+        }
     }
 
 

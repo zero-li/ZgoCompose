@@ -152,5 +152,5 @@ private fun ListScreen(
 fun numberOfColumns(context: Context): Int {
     val displayWidth = context.resources.displayMetrics.widthPixels
     val maxColumnWidth = 320 * context.resources.displayMetrics.density
-    return ceil(displayWidth.toDouble() / maxColumnWidth).toInt().coerceAtLeast(4)
+    return kotlin.math.ceil(displayWidth.toDouble() / maxColumnWidth).toInt().coerceAtLeast(4)
 }

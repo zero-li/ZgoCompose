@@ -34,14 +34,8 @@ fun ZgoAppBar(
 
     var moreMenuExpanded by remember { mutableStateOf(false) }
 
-    val foregroundColors = TopAppBarDefaults.smallTopAppBarColors(
-        navigationIconContentColor = MaterialTheme.colorScheme.primaryContainer
-    )
 
-    val foregroundColors_my = TopAppBarDefaults.smallTopAppBarColors(
-        containerColor = MaterialTheme.colorScheme.primary,
-        titleContentColor = MaterialTheme.colorScheme.primaryContainer,
-    )
+
 
 
     // Wrapping in a Surface to handle window insets
@@ -51,7 +45,7 @@ fun ZgoAppBar(
 //    }
 
 
-    SmallTopAppBar(
+    TopAppBar(
         title = {
             Text(
                 text = title,

@@ -349,45 +349,47 @@ fun TextArea() {
 fun CustomTextFieldBasedOnDecorationBox() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun CustomTextField(
-        value: String,
-        onValueChange: (String) -> Unit,
-        modifier: Modifier = Modifier
-    ) {
-        val interactionSource = remember { MutableInteractionSource() }
-        // parameters below will be passed to BasicTextField for correct behavior of the text field,
-        // and to the decoration box for proper styling and sizing
-        val enabled = true
-        val singleLine = true
-        val passwordTransformation = PasswordVisualTransformation()
-
-        BasicTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = modifier,
-            visualTransformation = passwordTransformation,
-            // internal implementation of the BasicTextField will dispatch focus events
-            interactionSource = interactionSource,
-            enabled = enabled,
-            singleLine = singleLine
+    fun CustomTextFieldBasedOnDecorationBox() {
+        @OptIn(ExperimentalMaterial3Api::class)
+        @Composable
+        fun CustomTextField(
+            value: String,
+            onValueChange: (String) -> Unit,
+            modifier: Modifier = Modifier
         ) {
-            TextFieldDefaults.TextFieldDecorationBox(
-                value = value,
-                visualTransformation = passwordTransformation,
-                innerTextField = it,
-                singleLine = singleLine,
-                enabled = enabled,
-                // same interaction source as the one passed to BasicTextField to read focus state
-                // for text field styling
-                interactionSource = interactionSource,
-                supportingText = { Text("Supporting text") },
-                // keep horizontal paddings but change the vertical
-                contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
-                    top = 8.dp, bottom = 8.dp
-                ),
-            )
-        }
+            val interactionSource = remember { MutableInteractionSource() }
+            // parameters below will be passed to BasicTextField for correct behavior of the text field,
+            // and to the decoration box for proper styling and sizing
+            val enabled = true
+            val singleLine = true
+            val passwordTransformation = PasswordVisualTransformation()
 
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = modifier,
+                visualTransformation = passwordTransformation,
+                // internal implementation of the BasicTextField will dispatch focus events
+                interactionSource = interactionSource,
+                enabled = enabled,
+                singleLine = singleLine
+            ) {
+                TextFieldDefaults.DecorationBox(
+                    value = value,
+                    visualTransformation = passwordTransformation,
+                    innerTextField = it,
+                    singleLine = singleLine,
+                    enabled = enabled,
+                    // same interaction source as the one passed to BasicTextField to read focus state
+                    // for text field styling
+                    interactionSource = interactionSource,
+                    supportingText = { Text("Supporting text") },
+                    // keep horizontal paddings but change the vertical
+                    contentPadding =
+                    TextFieldDefaults.contentPaddingWithoutLabel(top = 8.dp, bottom = 8.dp),
+                )
+            }
+        }
     }
 }
 
@@ -406,9 +408,9 @@ fun CustomOutlinedTextFieldBasedOnDecorationBox() {
         val enabled = true
         val singleLine = true
 
-        val colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = Color.LightGray,
-            focusedBorderColor = Color.DarkGray
+        val colors = TextFieldDefaults.colors(
+//            unfocusedBorderColor = Color.LightGray,
+//            focusedBorderColor = Color.DarkGray
         )
         BasicTextField(
             value = value,
@@ -419,7 +421,7 @@ fun CustomOutlinedTextFieldBasedOnDecorationBox() {
             enabled = enabled,
             singleLine = singleLine
         ) {
-            TextFieldDefaults.OutlinedTextFieldDecorationBox(
+            TextFieldDefaults.DecorationBox(
                 value = value,
                 visualTransformation = VisualTransformation.None,
                 innerTextField = it,
@@ -436,17 +438,7 @@ fun CustomOutlinedTextFieldBasedOnDecorationBox() {
                 // update border colors
                 colors = colors,
                 // update border thickness and shape
-                container = {
-                    TextFieldDefaults.OutlinedBorderContainerBox(
-                        enabled = enabled,
-                        isError = false,
-                        colors = colors,
-                        interactionSource = interactionSource,
-                        shape = RectangleShape,
-                        unfocusedBorderThickness = 2.dp,
-                        focusedBorderThickness = 4.dp
-                    )
-                },
+
             )
         }
     }

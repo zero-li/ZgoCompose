@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -54,7 +54,7 @@ fun HomePage(
 
     ZgoScaffold(
         topBar = {
-            SmallTopAppBar(title = {
+            TopAppBar(title = {
                 Text(text = "首页")
             })
         }) {

@@ -37,7 +37,7 @@ fun WidgetsPage(
     ZgoScaffold(
 //        modifier = Modifier.statusBarsPadding(),
         topBar = {
-            SmallTopAppBar(title = {
+            TopAppBar(title = {
                 Text(text = "组件")
             })
         }
@@ -45,7 +45,7 @@ fun WidgetsPage(
 
         Box(
             modifier = Modifier
-                .consumedWindowInsets(paddingValues)
+                .consumeWindowInsets(paddingValues)
                 .padding(paddingValues)
                 .statusBarsPadding(),
         ) {

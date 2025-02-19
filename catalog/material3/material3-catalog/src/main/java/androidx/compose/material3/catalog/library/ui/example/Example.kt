@@ -47,7 +47,7 @@ fun Example(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .consumedWindowInsets(paddingValues)
+                .consumeWindowInsets(paddingValues)
                 .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {

@@ -68,7 +68,7 @@ fun SimpleScaffoldWithTopBar() {
         content = { innerPadding ->
             LazyColumn(
                 // consume insets as scaffold doesn't do it by default (yet)
-                modifier = Modifier.consumedWindowInsets(innerPadding),
+                modifier = Modifier.consumeWindowInsets(innerPadding),
                 contentPadding = innerPadding
             ) {
                 items(count = 100) {

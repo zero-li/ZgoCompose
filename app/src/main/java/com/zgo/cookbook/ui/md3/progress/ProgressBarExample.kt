@@ -48,7 +48,9 @@ fun LinearProgressIndicatorSample() {
     )
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        LinearProgressIndicator(progress = animatedProgress)
+        LinearProgressIndicator(
+            progress = { animatedProgress },
+        )
         Spacer(Modifier.requiredHeight(30.dp))
         OutlinedButton(
             onClick = {

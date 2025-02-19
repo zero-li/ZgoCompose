@@ -77,7 +77,7 @@ fun ZgoScaffold(
         content = {
             Box(
                 modifier = Modifier
-                    .consumedWindowInsets(it)
+                    .consumeWindowInsets(it)
                     .padding(it)
             ) {
                 content(it)

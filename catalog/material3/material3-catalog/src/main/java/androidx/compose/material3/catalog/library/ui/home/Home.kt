@@ -46,7 +46,7 @@ fun Home(
         onThemeChange = onThemeChange
     ) { paddingValues ->
         LazyVerticalGrid(
-            modifier = Modifier.consumedWindowInsets(paddingValues),
+            modifier = Modifier.consumeWindowInsets(paddingValues),
             columns = GridCells.Adaptive(HomeCellMinSize),
             content = {
                 items(components) { component ->

@@ -64,7 +64,7 @@ fun HistoryPage(
             ),
             modifier = Modifier
                 .padding(paddingValues)
-                .consumedWindowInsets(paddingValues)
+                .consumeWindowInsets(paddingValues)
             ,
         ) {
             stickyHeader {

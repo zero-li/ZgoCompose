@@ -58,7 +58,7 @@ fun Component(
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
-                .consumedWindowInsets(paddingValues)
+                .consumeWindowInsets(paddingValues)
                 .padding(horizontal = ComponentPadding),
             contentPadding = paddingValues
 
