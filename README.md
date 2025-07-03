@@ -51,7 +51,9 @@ fun ComposeNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "first_screen"
+        startDestination = "first_screen",
+        //实现底部Padding，否则会被挡住
+            modifier = Modifier.padding(PaddingValues(bottom = innerPadding.calculateBottomPadding()))
     ) {
         composable("first_screen") {
             FirstScreen(navController = navController)

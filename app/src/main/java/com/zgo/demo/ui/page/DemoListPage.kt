@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,8 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.zgo.demo.chat.ChatApp
+import com.zgo.demo.fun_android.ui.FunAndroidPage
 import com.zgo.demo.scan.ScanApp
+import com.zgo.demo.tucong.ui.page.TuCongPage
 import com.zgo.demo.ui.page.main.MainPage
+import com.zgo.demo.ui.page.main.home.HomePage
 import com.zgo.lib.ui.components.ZgoScaffold
 
 
@@ -34,6 +39,7 @@ private open class Demo(val title: String) {
     object fun_android : Demo("fun_android")
     object scan : Demo("scan")
     object tucong : Demo("tucong")
+    object chat : Demo("chat")
 
 }
 
@@ -44,13 +50,16 @@ fun NavGraphBuilder.demoListNaviGraph(onBack: () -> Unit, navigate: (routeName: 
         MainPage(navigate = navigate)
     }
     composable(Demo.fun_android.title) {
-        MainPage(navigate = navigate)
+        FunAndroidPage ()
     }
     composable(Demo.scan.title) {
         ScanApp()
     }
     composable(Demo.tucong.title) {
-        MainPage(navigate = navigate)
+        TuCongPage {  }
+    }
+    composable(Demo.chat.title) {
+        ChatApp()
     }
 
 
@@ -77,6 +86,7 @@ fun DemoListPage(
                 Demo.fun_android,
                 Demo.scan,
                 Demo.tucong,
+                Demo.chat
             )
 
             items(list) { demo ->
@@ -119,7 +129,7 @@ fun DemoItem(
                 modifier = Modifier.weight(1f)
             )
             Icon(
-                Icons.Filled.NavigateNext,
+                Icons.AutoMirrored.Filled.NavigateNext,
                 contentDescription = null,
                 modifier = Modifier
                     .height(24.dp)

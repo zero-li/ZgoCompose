@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -35,6 +36,7 @@ import kotlinx.coroutines.launch
  * @author: zhhli
  * @date: 22/2/17
  */
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun <T : Any> SwipeRefreshList(
     collectAsLazyPagingItems: LazyPagingItems<T>,

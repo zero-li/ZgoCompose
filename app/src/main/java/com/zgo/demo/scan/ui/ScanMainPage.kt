@@ -3,6 +3,7 @@
 package com.zgo.demo.scan.ui
 
 import android.net.Uri
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.zgo.cookbook.ui.main.WidgetsPage
 import com.zgo.demo.scan.ui.scanner.ScannerPage
 import com.zgo.demo.scan.ui.setting.SettingPage
 import com.zgo.lib.ui.components.AbsBottomNavItem
@@ -36,7 +38,6 @@ fun ScanMainPage(
     val navBottomBar = rememberNavController()
 
     ZgoScaffold(
-        //modifier = Modifier.navigationBarsPadding(),
         bottomBar = {
             val items = listOf(
                 BottomNavItem.Scanner,
@@ -50,7 +51,8 @@ fun ScanMainPage(
         NavHost(
             navController = navBottomBar,
             startDestination = BottomNavItem.Scanner.screen_route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(PaddingValues(bottom = innerPadding.calculateBottomPadding()))
+
         ) {
             composable(BottomNavItem.Scanner.screen_route) {
                 ScannerPage() {

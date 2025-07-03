@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.zgo.demo.ui.page.main.home
+package com.zgo.demo.fun_android.ui
 
 
 
@@ -42,9 +42,7 @@ import com.zgo.lib.ui.components.ZgoScaffold
  * @date: 22/4/24
  */
 @Composable
-fun HomePage(
-    navigate: (routeName: String) -> Unit,
-) {
+fun FunAndroidPage(){
 
     val viewmodel: FunViewModel= viewModel()
 

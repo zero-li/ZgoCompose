@@ -35,7 +35,6 @@ fun WidgetsPage(
     navigate: (routeName: String) -> Unit,
 ) {
     ZgoScaffold(
-//        modifier = Modifier.statusBarsPadding(),
         topBar = {
             TopAppBar(title = {
                 Text(text = "组件")
@@ -45,9 +44,8 @@ fun WidgetsPage(
 
         Box(
             modifier = Modifier
-                .consumeWindowInsets(paddingValues)
                 .padding(paddingValues)
-                .statusBarsPadding(),
+            ,
         ) {
 
             LazyColumn(

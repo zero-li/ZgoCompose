@@ -24,9 +24,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.Parameters
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.material.shimmer
 import com.zgo.demo.tucong.data.TuCongViewModel
 import com.zgo.demo.tucong.data.bean.TcFeed
 import com.zgo.lib.ui.components.SwipeRefreshList
@@ -86,10 +83,7 @@ fun ImageCard(feed: TcFeed) {
     val name = feed.site.name
 
 
-    val modifier = Modifier.placeholder(
-        visible = false,
-        highlight = PlaceholderHighlight.shimmer()
-    )
+    val modifier = Modifier
 
     Column(
         modifier = Modifier

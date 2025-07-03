@@ -1,8 +1,14 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -12,8 +18,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ZgoDemo"
-include ':app'
+
+rootProject.name = "ZgoCompose"
+include(":app")
 //include ":catalog:integration-tests:material-catalog"
 //include ":catalog:material:samples"
 //include ":catalog:material:material-catalog"
@@ -21,3 +28,4 @@ include ':app'
 //include ":catalog:material3:material3-catalog"
 //include ":catalog:annotation-sampled"
 //include ':catalog:annotation-sampled'
+ 

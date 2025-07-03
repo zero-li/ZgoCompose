@@ -1,6 +1,7 @@
 package com.zgo.demo.ui.page.main
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.zgo.demo.fun_android.data.home.FunViewModel
 import com.zgo.demo.tucong.ui.page.TuCongPage
 import com.zgo.demo.ui.page.main.home.HomePage
 import com.zgo.demo.ui.page.main.mine.MinePage
@@ -46,8 +48,8 @@ fun MainPage(navigate: (routeName: String) -> Unit) {
         }) { innerPadding ->
         // Apply the padding globally to the whole BottomNavScreensController
         Box(
-            modifier = Modifier
-                .padding(innerPadding)//实现底部Padding，否则会被挡住
+            //实现底部Padding，否则会被挡住
+            modifier = Modifier.padding(PaddingValues(bottom = innerPadding.calculateBottomPadding()))
             //.systemBarsPadding()
         ) {
             NavHost(

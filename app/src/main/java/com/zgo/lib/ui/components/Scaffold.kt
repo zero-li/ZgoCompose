@@ -3,6 +3,7 @@
 package com.zgo.lib.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +28,7 @@ import com.zgo.lib.ui.theme.AppTheme
 
 @Composable
 fun ZgoScaffold(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},

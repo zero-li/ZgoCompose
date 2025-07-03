@@ -41,7 +41,9 @@ import com.zgo.lib.ui.theme.color.ZgoColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColorPage() {
+fun ColorPage(
+    count:Int =20
+) {
 
 
     ZgoScaffold(title = "色彩",
@@ -53,7 +55,7 @@ fun ColorPage() {
                 TitleItem("自定义组件")
             }
 
-            val items = zgoColorRandomList
+            val items = zgoColorRandomList.subList(0,count)
 
 
             items(items.size) { index ->

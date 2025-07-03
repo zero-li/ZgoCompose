@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionRequired
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 
 
@@ -30,17 +30,28 @@ fun PermissionView(
     content: @Composable () -> Unit = { }
 ) {
     val permissionState = rememberPermissionState(permission)
-    PermissionRequired(
-        permissionState = permissionState,
-        permissionNotGrantedContent = {
-            Rationale(
-                text = rationale,
-                onRequestPermission = { permissionState.launchPermissionRequest() }
-            )
-        },
-        permissionNotAvailableContent = permissionNotAvailableContent,
-        content = content
-    )
+//    PermissionRequired(
+//        permissionState = permissionState,
+//        permissionNotGrantedContent = {
+//            Rationale(
+//                text = rationale,
+//                onRequestPermission = { permissionState.launchPermissionRequest() }
+//            )
+//        },
+//        permissionNotAvailableContent = permissionNotAvailableContent,
+//        content = content
+//    )
+
+    if(permissionState.status.isGranted){
+        content()
+    }else {
+        Rationale(
+            text = rationale,
+            onRequestPermission = { permissionState.launchPermissionRequest() }
+        )
+    }
+
+
 }
 
 @Composable
