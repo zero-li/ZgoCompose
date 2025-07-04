@@ -28,8 +28,6 @@ open class BaseViewModel : ViewModel() {
     fun <T : Any> pager(
         config: PagingConfig = PagingConfig(
             pageSize = 10,
-            prefetchDistance = 4,
-            initialLoadSize = 10
         ), source: () -> BasePagingSource<T>
     ): Flow<PagingData<T>> {
         return Pager(config) {

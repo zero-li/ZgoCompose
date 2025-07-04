@@ -15,6 +15,7 @@ import com.zgo.lib.data.http.paging.IPageWrapper
  */
 class HomeArticleSource : BasePagingSource<Article>() {
     override suspend fun httpLoadData(page: Int, perPage: Int): KResults<IPageWrapper<Article>> {
-        return ApiFunAndroid.fetchTopArticles(page, perPage)
+        // 重要：该接口从 0 开始，且返回 curPage=1，所以都需 -1
+        return ApiFunAndroid.fetchTopArticles(page-1, perPage)
     }
 }

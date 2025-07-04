@@ -2,6 +2,8 @@ package com.zgo.demo.fun_android.data.bean
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 
 /*
@@ -11,6 +13,7 @@ import com.google.gson.annotations.SerializedName
  * @date: 22/4/24
  */
 @Keep
+@Serializable
 data class Article(
     @SerializedName("apkLink")
     var apkLink: String = "",
@@ -43,6 +46,7 @@ data class Article(
     @SerializedName("link")
     var link: String = "", // https://www.wanandroid.com/blog/show/3355
     @SerializedName("niceDate")
+    @SerialName("niceDate")
     var niceDate: String = "", // 2022-04-13 22:57
     @SerializedName("niceShareDate")
     var niceShareDate: String = "", // 2022-04-13 22:57
@@ -61,13 +65,14 @@ data class Article(
     @SerializedName("shareDate")
     var shareDate: Long = 0, // 1649861827000
     @SerializedName("shareUser")
+    @SerialName("shareUser")
     var shareUser: String = "",
     @SerializedName("superChapterId")
     var superChapterId: Int = 0, // 294
     @SerializedName("superChapterName")
     var superChapterName: String = "", // 开源项目主Tab
-    @SerializedName("tags")
-    var tags: List<Tag> = listOf(),
+//    @SerializedName("tags")
+//    var tags: List<Tag> = listOf(),
     @SerializedName("title")
     var title: String = "", // SpannableX
     @SerializedName("type")

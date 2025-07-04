@@ -1,5 +1,6 @@
 package com.zgo.lib.data.http.paging
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.zgo.lib.data.http.KResults
@@ -14,8 +15,13 @@ import com.zgo.lib.data.http.KResults
 abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
 
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {
+
+        Log.d("zgo", "state: $state")
+
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
+            Log.d("zgo", "anchorPosition: $anchorPosition  === anchorPage: $anchorPage")
+
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
@@ -25,6 +31,8 @@ abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
         val nextPage = params.key ?: 1
+
+        Log.d("zgo", "nextPage: $nextPage")
 
         val results = httpLoadData(nextPage, params.loadSize)
 
@@ -38,7 +46,7 @@ abstract class BasePagingSource<T : Any> : PagingSource<Int, T>() {
                 LoadResult.Page(
                     data = list,
                     prevKey = if (nextPage == 1) null else nextPage - 1,
-                    nextKey = if (noNextPage) null else results.data!!.curPage + 1
+                    nextKey = if (noNextPage) null else results.data!!.curPage + 1,
                 )
 
 

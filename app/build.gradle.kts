@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
 }
 
@@ -109,6 +110,13 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.okhttp)
     implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    // Ktor Content Negotiation (例如，用于 JSON 序列化/反序列化)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    // 可选: Ktor Logging (用于记录网络请求和响应)
+    implementation(libs.ktor.client.logging)
 
     // CameraX
     implementation(libs.androidx.camera.camera2)
